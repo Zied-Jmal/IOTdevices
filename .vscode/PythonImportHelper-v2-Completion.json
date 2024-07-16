@@ -1,0 +1,561 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "File",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "UploadFile",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Query",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "File",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "UploadFile",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Query",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
+        "label": "queue",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "queue",
+        "description": "queue",
+        "detail": "queue",
+        "documentation": {}
+    },
+    {
+        "label": "Literal",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Literal",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "ManagerMQTT",
+        "importPath": "src.managers.mqtt_manager.MQTTManager",
+        "description": "src.managers.mqtt_manager.MQTTManager",
+        "isExtraImport": true,
+        "detail": "src.managers.mqtt_manager.MQTTManager",
+        "documentation": {}
+    },
+    {
+        "label": "MongoDBClient",
+        "importPath": "database",
+        "description": "database",
+        "isExtraImport": true,
+        "detail": "database",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigMQTT",
+        "importPath": "src.modules.mqtt_modules.config_mqtt",
+        "description": "src.modules.mqtt_modules.config_mqtt",
+        "isExtraImport": true,
+        "detail": "src.modules.mqtt_modules.config_mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigMQTT",
+        "importPath": "src.modules.mqtt_modules.config_mqtt",
+        "description": "src.modules.mqtt_modules.config_mqtt",
+        "isExtraImport": true,
+        "detail": "src.modules.mqtt_modules.config_mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "MongoDBClient",
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "isExtraImport": true,
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "DataWriter",
+        "importPath": "src.services.database_services.writer_database",
+        "description": "src.services.database_services.writer_database",
+        "isExtraImport": true,
+        "detail": "src.services.database_services.writer_database",
+        "documentation": {}
+    },
+    {
+        "label": "MQTTService",
+        "importPath": "src.services.mqtt_services.mqtt_service",
+        "description": "src.services.mqtt_services.mqtt_service",
+        "isExtraImport": true,
+        "detail": "src.services.mqtt_services.mqtt_service",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "UpdateOne",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "ASCENDING",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "AsyncIOMotorClient",
+        "importPath": "motor.motor_asyncio",
+        "description": "motor.motor_asyncio",
+        "isExtraImport": true,
+        "detail": "motor.motor_asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "based on your project structure",
+        "importPath": "src.modules.database_modules.database import MongoDBClient  # Adjust",
+        "description": "src.modules.database_modules.database import MongoDBClient  # Adjust",
+        "isExtraImport": true,
+        "detail": "src.modules.database_modules.database import MongoDBClient  # Adjust",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "paho.mqtt.client",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "paho.mqtt.client",
+        "description": "paho.mqtt.client",
+        "detail": "paho.mqtt.client",
+        "documentation": {}
+    },
+    {
+        "label": "ssl",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "ssl",
+        "description": "ssl",
+        "detail": "ssl",
+        "documentation": {}
+    },
+    {
+        "label": "multiprocessing",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "multiprocessing",
+        "description": "multiprocessing",
+        "detail": "multiprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "uvicorn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uvicorn",
+        "description": "uvicorn",
+        "detail": "uvicorn",
+        "documentation": {}
+    },
+    {
+        "label": "PublishRequest",
+        "kind": 6,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "class PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str\n    value: str\nclass NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigRequest",
+        "kind": 6,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "class ConfigRequest(BaseModel):\n    key: str\n    value: str\nclass NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str\nclass QosEnum(int, Enum):\n    low = 0\n    medium = 1",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "NestedConfigRequest",
+        "kind": 6,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "class NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str\nclass QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\n#! Red (!)\n# ? Blue (?)",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "QosEnum",
+        "kind": 6,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "class QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\n#! Red (!)\n# ? Blue (?)\n# * Green (*)\n# ^ Yellow (^)\n# & Pink (&)\n# ~ Purple (~)",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "app = FastAPI()\nmanager = ManagerMQTT(\"your_config_file.json\")\n# ------------------------------------------------------------------------------\n# request_body\n# ------------------------------------------------------------------------------\nclass PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "manager",
+        "kind": 5,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "manager = ManagerMQTT(\"your_config_file.json\")\n# ------------------------------------------------------------------------------\n# request_body\n# ------------------------------------------------------------------------------\nclass PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str\n    value: str",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "UPLOAD_DIR",
+        "kind": 5,
+        "importPath": "src.api.config_api.config_api",
+        "description": "src.api.config_api.config_api",
+        "peekOfCode": "UPLOAD_DIR = \"Z:/shellyG2/4\"\n# ------------------------------------------------------------------------------\n# MQTT mongo MANAGER\n# ------------------------------------------------------------------------------\n@app.post(\"/instances/create/{instance_name}\", tags=[\"MQTT instance\"])\nasync def create_instance(instance_name: str):\n    try:\n        manager.create_instance(instance_name)\n        return {\"message\": f\"Instance {instance_name} created\"}\n    except Exception as e:",
+        "detail": "src.api.config_api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "src.managers.database_manager.reader_database",
+        "description": "src.managers.database_manager.reader_database",
+        "peekOfCode": "app = FastAPI()\nasync def get_db():\n    client = MongoDBClient.get_client()\n    return client\n@app.get(\"/\")\nasync def read_root():\n    return {\"message\": \"Welcome to the FastAPI MongoDB application\"}\n@app.get(\"/databases\")\nasync def list_databases(db=Depends(get_db)) -> List[str]:\n    return db.list_database_names()",
+        "detail": "src.managers.database_manager.reader_database",
+        "documentation": {}
+    },
+    {
+        "label": "ManagerMQTT",
+        "kind": 6,
+        "importPath": "src.managers.mqtt_manager.MQTTManager",
+        "description": "src.managers.mqtt_manager.MQTTManager",
+        "peekOfCode": "class ManagerMQTT:\n    def __init__(self, config_file):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = DataWriter()",
+        "detail": "src.managers.mqtt_manager.MQTTManager",
+        "documentation": {}
+    },
+    {
+        "label": "MongoDBClient",
+        "kind": 6,
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = AsyncIOMotorClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client\nmongodb_client = MongoDBClient.get_client()\n\"\"\"\nfrom pymongo import MongoClient",
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "MongoDBClient",
+        "kind": 6,
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = MongoClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client\n    @staticmethod\n    def get_template(collection_name):\n        client = MongoDBClient.get_client()",
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "MongoDBClient",
+        "kind": 6,
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "peekOfCode": "class MongoDBClient:\n    _client = None\n    _lock = threading.Lock()\n    @staticmethod\n    def get_client() -> AsyncIOMotorClient:\n        if MongoDBClient._client is None:\n            with MongoDBClient._lock:\n                if MongoDBClient._client is None:\n                    MongoDBClient._client = AsyncIOMotorClient(\n                        \"mongodb://localhost:27017/\"",
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "mongodb_client",
+        "kind": 5,
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "peekOfCode": "mongodb_client = MongoDBClient.get_client()\n\"\"\"\nfrom pymongo import MongoClient\nclass MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = MongoClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client",
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigMQTT",
+        "kind": 6,
+        "importPath": "src.modules.mqtt_modules.config_mqtt",
+        "description": "src.modules.mqtt_modules.config_mqtt",
+        "peekOfCode": "class ConfigMQTT:\n    def __init__(self, db, collection_name):\n        # self.config_json = config_json\n        # self.config_data = self.config_json.load()\n        self.collection_name = collection_name\n        self.collection = db[collection_name]\n        self.config_data = self.load()\n    def load(self):\n        # Load the config from MongoDB\n        config = self.collection.find_one({})",
+        "detail": "src.modules.mqtt_modules.config_mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "testConfig",
+        "kind": 5,
+        "importPath": "src.modules.mqtt_modules.config_mqtt",
+        "description": "src.modules.mqtt_modules.config_mqtt",
+        "peekOfCode": "testConfig = ConfigMQTT(ConfigJson(\"test_config.json\"))\ntestConfig.create_template()\ntestConfig.insert_value(\"broker_address\", \"mqdtt.eclipseprojects.io\")\nprint(testConfig.get_value(\"broker_address\"))\nprint(testConfig.get_value(\"topics\"))\ntestConfig.insert_value(\"topics\", \"mqdtt.eclipseprojects.ios\")\ntestConfig.insert_nested_value(\"settings\", \"keep_alive\", value=\"10\")\nprint(testConfig.get_nested_value(\"settings\", \"keep_alive\"))\n\"\"\"\n\"\"\" def get_one_string_variable_by_name(self, name):",
+        "detail": "src.modules.mqtt_modules.config_mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "DataWriter",
+        "kind": 6,
+        "importPath": "src.services.database_services.writer_database",
+        "description": "src.services.database_services.writer_database",
+        "peekOfCode": "class DataWriter:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        self.db = self.client[\"my_databaseEM\"]\n        self.collection_cache = {}\n    def get_value(self,data, path):\n        keys = re.split(r'\\.|\\[|\\]\\[|\\]', path)\n        keys = [key for key in keys if key]  # Remove empty strings\n        for key in keys:\n            if key.isdigit():",
+        "detail": "src.services.database_services.writer_database",
+        "documentation": {}
+    },
+    {
+        "label": "MQTTService",
+        "kind": 6,
+        "importPath": "src.services.mqtt_services.mqtt_service",
+        "description": "src.services.mqtt_services.mqtt_service",
+        "peekOfCode": "class MQTTService:\n    def __init__(self, ConfigMQTT, message_queue):\n        self.ConfigMQTT = ConfigMQTT\n        self.client = mqtt.Client(\n            mqtt.CallbackAPIVersion.VERSION2,\n            client_id=self.ConfigMQTT.get_value(\"client_id\"),\n        )\n        self.running = False\n        self.client.on_connect = self.on_connect\n        self.client.on_message = self.on_message",
+        "detail": "src.services.mqtt_services.mqtt_service",
+        "documentation": {}
+    },
+    {
+        "label": "run_server",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def run_server(port):\n    from src.api.config_api.config_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"0.0.0.0\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports\n    p1 = multiprocessing.Process(target=run_server, args=(port1,))\n    p2 = multiprocessing.Process(target=run_server, args=(port2,))\n    p1.start()",
+        "detail": "main",
+        "documentation": {}
+    }
+]
