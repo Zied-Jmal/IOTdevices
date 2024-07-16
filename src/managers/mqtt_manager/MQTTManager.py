@@ -22,7 +22,7 @@ from src.services.database_services.writer_database import DataWriter
 
 from src.services.mqtt_services.mqtt_service import MQTTService
 
-
+from src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics import data_writer_service
 
 
 
@@ -42,7 +42,7 @@ class ManagerMQTT:
         self.client = MongoDBClient.get_client()
         self.config_db = self.client["config_db"]
         self.load_existing_instances()
-        self.data_writer = DataWriter()
+        self.data_writer = data_writer_service()
 
         self.saving_thread = threading.Thread(target=self.save_messages)
         self.saving_thread.daemon = (
@@ -53,7 +53,7 @@ class ManagerMQTT:
     def load_existing_instances(self):
         collections = self.config_db.list_collection_names()
         for collection in collections:
-            self.create_instance(collection, initialize=False)
+            self.create_instance(collection)
             print("collection: ", collection)
 
     def save_messages(self):
@@ -64,7 +64,7 @@ class ManagerMQTT:
             self.message_queue.task_done()
 
 
-    def create_instance(self, instance_name, initialize=True):
+    def create_instance(self, instance_name):
         if instance_name in self.instances:
             raise Exception(f"Instance {instance_name} already exists")
 
@@ -72,8 +72,6 @@ class ManagerMQTT:
         mqtt_instance = MQTTService(config_mqtt, message_queue=self.message_queue)
         self.instances[instance_name] = mqtt_instance
 
-        if initialize:
-            mqtt_instance.initialize()
             
     def delete_instance(self, instance_name):
         if instance_name not in self.instances:

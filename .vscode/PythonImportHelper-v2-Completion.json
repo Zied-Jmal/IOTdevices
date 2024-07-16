@@ -246,6 +246,14 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "timedelta",
         "importPath": "datetime",
         "description": "datetime",
@@ -294,6 +302,14 @@
         "documentation": {}
     },
     {
+        "label": "data_writer_service",
+        "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "isExtraImport": true,
+        "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "documentation": {}
+    },
+    {
         "label": "MongoClient",
         "importPath": "pymongo",
         "description": "pymongo",
@@ -318,11 +334,29 @@
         "documentation": {}
     },
     {
-        "label": "AsyncIOMotorClient",
-        "importPath": "motor.motor_asyncio",
-        "description": "motor.motor_asyncio",
+        "label": "CollectionInvalid",
+        "importPath": "pymongo.errors",
+        "description": "pymongo.errors",
         "isExtraImport": true,
-        "detail": "motor.motor_asyncio",
+        "detail": "pymongo.errors",
+        "documentation": {}
+    },
+    {
+        "label": "paho.mqtt.client",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "paho.mqtt.client",
+        "description": "paho.mqtt.client",
+        "detail": "paho.mqtt.client",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
         "documentation": {}
     },
     {
@@ -334,12 +368,11 @@
         "documentation": {}
     },
     {
-        "label": "json",
-        "kind": 6,
+        "label": "based on your project structure",
+        "importPath": "src.modules.database_modules.database import MongoDBClient  # Adjust",
+        "description": "src.modules.database_modules.database import MongoDBClient  # Adjust",
         "isExtraImport": true,
-        "importPath": "json",
-        "description": "json",
-        "detail": "json",
+        "detail": "src.modules.database_modules.database import MongoDBClient  # Adjust",
         "documentation": {}
     },
     {
@@ -358,15 +391,6 @@
         "importPath": "time",
         "description": "time",
         "detail": "time",
-        "documentation": {}
-    },
-    {
-        "label": "paho.mqtt.client",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "paho.mqtt.client",
-        "description": "paho.mqtt.client",
-        "detail": "paho.mqtt.client",
         "documentation": {}
     },
     {
@@ -451,15 +475,6 @@
         "documentation": {}
     },
     {
-        "label": "UPLOAD_DIR",
-        "kind": 5,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
-        "peekOfCode": "UPLOAD_DIR = \"Z:/shellyG2/4\"\n# ------------------------------------------------------------------------------\n# MQTT mongo MANAGER\n# ------------------------------------------------------------------------------\n@app.post(\"/instances/create/{instance_name}\", tags=[\"MQTT instance\"])\nasync def create_instance(instance_name: str):\n    try:\n        manager.create_instance(instance_name)\n        return {\"message\": f\"Instance {instance_name} created\"}\n    except Exception as e:",
-        "detail": "src.api.config_api.config_api",
-        "documentation": {}
-    },
-    {
         "label": "app",
         "kind": 5,
         "importPath": "src.managers.database_manager.reader_database",
@@ -473,7 +488,7 @@
         "kind": 6,
         "importPath": "src.managers.mqtt_manager.MQTTManager",
         "description": "src.managers.mqtt_manager.MQTTManager",
-        "peekOfCode": "class ManagerMQTT:\n    def __init__(self, config_file):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = DataWriter()",
+        "peekOfCode": "class ManagerMQTT:\n    def __init__(self, config_file):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = data_writer_service()",
         "detail": "src.managers.mqtt_manager.MQTTManager",
         "documentation": {}
     },
@@ -482,34 +497,7 @@
         "kind": 6,
         "importPath": "src.modules.database_modules.database",
         "description": "src.modules.database_modules.database",
-        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = AsyncIOMotorClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client\nmongodb_client = MongoDBClient.get_client()\n\"\"\"\nfrom pymongo import MongoClient",
-        "detail": "src.modules.database_modules.database",
-        "documentation": {}
-    },
-    {
-        "label": "MongoDBClient",
-        "kind": 6,
-        "importPath": "src.modules.database_modules.database",
-        "description": "src.modules.database_modules.database",
         "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = MongoClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client\n    @staticmethod\n    def get_template(collection_name):\n        client = MongoDBClient.get_client()",
-        "detail": "src.modules.database_modules.database",
-        "documentation": {}
-    },
-    {
-        "label": "MongoDBClient",
-        "kind": 6,
-        "importPath": "src.modules.database_modules.database",
-        "description": "src.modules.database_modules.database",
-        "peekOfCode": "class MongoDBClient:\n    _client = None\n    _lock = threading.Lock()\n    @staticmethod\n    def get_client() -> AsyncIOMotorClient:\n        if MongoDBClient._client is None:\n            with MongoDBClient._lock:\n                if MongoDBClient._client is None:\n                    MongoDBClient._client = AsyncIOMotorClient(\n                        \"mongodb://localhost:27017/\"",
-        "detail": "src.modules.database_modules.database",
-        "documentation": {}
-    },
-    {
-        "label": "mongodb_client",
-        "kind": 5,
-        "importPath": "src.modules.database_modules.database",
-        "description": "src.modules.database_modules.database",
-        "peekOfCode": "mongodb_client = MongoDBClient.get_client()\n\"\"\"\nfrom pymongo import MongoClient\nclass MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = MongoClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client",
         "detail": "src.modules.database_modules.database",
         "documentation": {}
     },
@@ -529,6 +517,15 @@
         "description": "src.modules.mqtt_modules.config_mqtt",
         "peekOfCode": "testConfig = ConfigMQTT(ConfigJson(\"test_config.json\"))\ntestConfig.create_template()\ntestConfig.insert_value(\"broker_address\", \"mqdtt.eclipseprojects.io\")\nprint(testConfig.get_value(\"broker_address\"))\nprint(testConfig.get_value(\"topics\"))\ntestConfig.insert_value(\"topics\", \"mqdtt.eclipseprojects.ios\")\ntestConfig.insert_nested_value(\"settings\", \"keep_alive\", value=\"10\")\nprint(testConfig.get_nested_value(\"settings\", \"keep_alive\"))\n\"\"\"\n\"\"\" def get_one_string_variable_by_name(self, name):",
         "detail": "src.modules.mqtt_modules.config_mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "data_writer_service",
+        "kind": 6,
+        "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "peekOfCode": "class data_writer_service:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config\"][\"schemas\"].find()\n        self.schemas = list(self.schemas_cursor)  # Convert cursor to list for easier access\n        # Function to create time-series collections in respective databases, if not already created\n    def create_time_series_collection(self,db_name, collection_name, time_field, meta_field, granularity='seconds'):\n        db = self.client[db_name]\n        # Check if the collection already exists",
+        "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "documentation": {}
     },
     {

@@ -1,19 +1,4 @@
 # database.py
-"""from motor.motor_asyncio import AsyncIOMotorClient
-
-
-class MongoDBClient:
-    _client = None
-
-    @staticmethod
-    def get_client():
-        if MongoDBClient._client is None:
-            MongoDBClient._client = AsyncIOMotorClient("mongodb://localhost:27017/")
-        return MongoDBClient._client
-
-
-mongodb_client = MongoDBClient.get_client()
-"""
 from pymongo import MongoClient
 
 
@@ -33,24 +18,3 @@ class MongoDBClient:
         collection = db[collection_name]
         template_doc = collection.find_one({})
         return template_doc
-"""
-# database.py
-
-from motor.motor_asyncio import AsyncIOMotorClient
-import threading
-
-
-class MongoDBClient:
-    _client = None
-    _lock = threading.Lock()
-
-    @staticmethod
-    def get_client() -> AsyncIOMotorClient:
-        if MongoDBClient._client is None:
-            with MongoDBClient._lock:
-                if MongoDBClient._client is None:
-                    MongoDBClient._client = AsyncIOMotorClient(
-                        "mongodb://localhost:27017/"
-                    )
-        return MongoDBClient._client
-"""

@@ -1,4 +1,3 @@
-
 import os
 import sys
 from fastapi import FastAPI, HTTPException, File, UploadFile
@@ -12,6 +11,7 @@ from enum import Enum
 import logging
 
 from src.managers.mqtt_manager.MQTTManager import ManagerMQTT
+
 # ------------------------------------------------------------------------------
 # FastAPI Setup
 # ------------------------------------------------------------------------------
@@ -84,56 +84,8 @@ async def get_config1(instance_name: str, key: str):
 # ------------------------------------------------------------------------------
 # FastAPI Routes :POST
 # ------------------------------------------------------------------------------
-@app.post("/start")
-async def start_mqtt():
-    try:
-        manager.start_mqtt()
-        return {"message": "MQTT client started"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/stop")
-async def stop_mqtt():
-    try:
-        manager.stop_mqtt()
-        return {"message": "MQTT client stopped"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/publish")
-async def publish_message(request: PublishRequest):
-    try:
-        manager.publish_message(request.topic, request.payload)
-        return {"message": f"Message published to {request.topic}"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/config")
-async def set_config(request: ConfigRequest):
-    try:
-        manager.set_config_value(request.key, request.value)
-        return {"message": f"Config {request.key} set to {request.value}"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/config/nested")
-async def set_nested_config(request: NestedConfigRequest):
-    try:
-        manager.set_nested_config_value(
-            request.section, request.key, value=request.value
-        )
-        return {
-            "message": f"Nested config {request.section}.{request.key} set to {request.value}"
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-UPLOAD_DIR = "Z:/shellyG2/4"
 
 
 # ------------------------------------------------------------------------------
@@ -218,24 +170,6 @@ async def set_instance_nested_config(instance_name: str, request: NestedConfigRe
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/add/{instance_name}/pipelineConfig")
-async def set_instance_nested_config1(instance_name: str, request: NestedConfigRequest):
-    try:
-        return {"message": f"pipeline configuration for{instance_name} inserted"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/add/{instance_name}/schemaConfig")
-async def set_instance_nested_config_2(
-    instance_name: str, request: NestedConfigRequest
-):
-    try:
-        return {"message": f"schema configuration for {instance_name} inserted"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
 # ------------------------------------------------------------------------------
 # POST: update instance configuration
 # ------------------------------------------------------------------------------
@@ -273,12 +207,98 @@ async def set_instance_retain_config(
 
 
 @app.post(
+    "/instances/{instance_name}/config/username", tags=["update instance configuration"]
+)
+async def set_instance_username_config(
+    instance_name: str, value: str = Query(description="username", alias="username")
+):
+    jsonTree = ["settings", "username"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+
+@app.post(
+    "/instances/{instance_name}/config/password", tags=["update instance configuration"]
+)
+async def set_instance_password_config(
+    instance_name: str, value: str = Query(description="password", alias="password")
+):
+    jsonTree = ["settings", "password"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+
+@app.post(
+    "/instances/{instance_name}/config/ssl", tags=["update instance configuration"]
+)
+async def set_instance_ssl_config(
+    instance_name: str, value: bool = Query(description="ssl", alias="ssl")
+):
+    jsonTree = ["settings", "ssl"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+
+@app.post("/instances/{instance_name}/config/upload", tags=["update instance configuration"])
+async def upload_files(instance_name: str,
+    ca_certs: UploadFile = File(None),
+    certfile: UploadFile = File(None),
+    keyfile: UploadFile = File(None),
+):
+    UPLOAD_DIR = f"certs/{instance_name}"
+    if not os.path.exists(UPLOAD_DIR):
+        os.makedirs(UPLOAD_DIR)
+    file_paths = {
+        "ca_certs": None,
+        "certfile": None,
+        "keyfile": None,
+    }
+
+    if ca_certs:
+        ca_certs_path = os.path.join(UPLOAD_DIR, ca_certs.filename)
+        with open(ca_certs_path, "wb") as buffer:
+            shutil.copyfileobj(ca_certs.file, buffer)
+        file_paths["ca_certs"] = ca_certs_path
+        print("file uploaded: ", ca_certs_path)
+        value = file_paths["ca_certs"]
+        jsonTree = ["settings", "ca_certs"]
+        return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+    if certfile:
+        certfile_path = os.path.join(UPLOAD_DIR, certfile.filename)
+        with open(certfile_path, "wb") as buffer:
+            shutil.copyfileobj(certfile.file, buffer)
+        file_paths["certfile"] = certfile_path
+
+    if keyfile:
+        keyfile_path = os.path.join(UPLOAD_DIR, keyfile.filename)
+        with open(keyfile_path, "wb") as buffer:
+            shutil.copyfileobj(keyfile.file, buffer)
+        file_paths["keyfile"] = keyfile_path
+
+    # Here you would update your update configuration with the new file paths
+    # For example:
+    # config["ca_certs"] = file_paths["ca_certs"]
+    # config["certfile"] = file_paths["certfile"]
+    # config["keyfile"] = file_paths["keyfile"]
+
+    return {"file_paths": file_paths}
+
+
+@app.post(
     "/instances/{instance_name}/config/insecure", tags=["update instance configuration"]
 )
 async def set_instance_insecure_config(
     instance_name: str, value: bool = Query(description="insecure", alias="insecure")
 ):
     jsonTree = ["settings", "insecure"]
+
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+
+@app.post(
+    "/instances/{instance_name}/config/auth", tags=["update instance configuration"]
+)
+async def set_instance_auth_config(
+    instance_name: str, value: bool = Query(description="auth", alias="auth")
+):
+    jsonTree = ["settings", "auth"]
 
     return manager.update_instance_configuration(instance_name, jsonTree, value=value)
 
