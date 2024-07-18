@@ -286,6 +286,14 @@
         "documentation": {}
     },
     {
+        "label": "MongoDBClient",
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "isExtraImport": true,
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
         "label": "DataWriter",
         "importPath": "src.services.database_services.writer_database",
         "description": "src.services.database_services.writer_database",
@@ -302,7 +310,7 @@
         "documentation": {}
     },
     {
-        "label": "data_writer_service",
+        "label": "DataWriterService",
         "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "isExtraImport": true,
@@ -360,28 +368,20 @@
         "documentation": {}
     },
     {
-        "label": "based on your project structure",
-        "importPath": "src.modules.database_modules.database import MongoDBClient  # Adjust",
-        "description": "src.modules.database_modules.database import MongoDBClient  # Adjust",
-        "isExtraImport": true,
-        "detail": "src.modules.database_modules.database import MongoDBClient  # Adjust",
-        "documentation": {}
-    },
-    {
-        "label": "based on your project structure",
-        "importPath": "src.modules.database_modules.database import MongoDBClient  # Adjust",
-        "description": "src.modules.database_modules.database import MongoDBClient  # Adjust",
-        "isExtraImport": true,
-        "detail": "src.modules.database_modules.database import MongoDBClient  # Adjust",
-        "documentation": {}
-    },
-    {
         "label": "re",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "re",
         "description": "re",
         "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "based on your project structure",
+        "importPath": "src.modules.database_modules.database import MongoDBClient  # Adjust",
+        "description": "src.modules.database_modules.database import MongoDBClient  # Adjust",
+        "isExtraImport": true,
+        "detail": "src.modules.database_modules.database import MongoDBClient  # Adjust",
         "documentation": {}
     },
     {
@@ -488,7 +488,7 @@
         "kind": 6,
         "importPath": "src.managers.mqtt_manager.MQTTManager",
         "description": "src.managers.mqtt_manager.MQTTManager",
-        "peekOfCode": "class ManagerMQTT:\n    def __init__(self, config_file):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = data_writer_service()",
+        "peekOfCode": "class ManagerMQTT:\n    def __init__(self, config_file):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = DataWriterService()",
         "detail": "src.managers.mqtt_manager.MQTTManager",
         "documentation": {}
     },
@@ -520,11 +520,11 @@
         "documentation": {}
     },
     {
-        "label": "data_writer_service",
+        "label": "DataWriterService",
         "kind": 6,
         "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
-        "peekOfCode": "class data_writer_service:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config\"][\"schemas\"].find()\n        self.schemas = list(self.schemas_cursor)  # Convert cursor to list for easier access\n        # Function to create time-series collections in respective databases, if not already created\n    def create_time_series_collection(self,db_name, collection_name, time_field, meta_field, granularity='seconds'):\n        db = self.client[db_name]\n        # Check if the collection already exists",
+        "peekOfCode": "class DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config4\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(\n        self, db_name, collection_name, time_field, meta_field, granularity=\"seconds\"",
         "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "documentation": {}
     },

@@ -301,8 +301,3 @@ async def set_instance_auth_config(
     jsonTree = ["settings", "auth"]
 
     return manager.update_instance_configuration(instance_name, jsonTree, value=value)
-
-
-# Ensure the upload directory exists
-if not os.path.exists(UPLOAD_DIR):
-    os.makedirs(UPLOAD_DIR)

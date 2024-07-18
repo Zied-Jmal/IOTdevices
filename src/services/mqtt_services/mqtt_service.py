@@ -49,12 +49,14 @@ class MQTTService:
 
     def on_message(self, client, userdata, message):
         self.messages.append(message.payload)
+        #print(f">for this topic : {message.topic} ")
+        #print(f"-->Received the following message: {message.payload.decode()}")
         self.message_queue.put((message.topic, message.payload.decode()))
         # print(f">for this topic : {message.topic} ")
         # print(f"-->Received the following message: {message.payload.decode()}")
         if len(self.messages) > 1000:
             self.messages = []
-
+            print("Clearing messages list")
         # self.message_queue.put((message.topic, message.payload.decode()))
 
     def on_connect(self, client, userdata, flags, reason_code, properties):

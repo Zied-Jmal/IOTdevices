@@ -22,14 +22,14 @@ from src.services.database_services.writer_database import DataWriter
 
 from src.services.mqtt_services.mqtt_service import MQTTService
 
-from src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics import data_writer_service
-
+from src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics import (
+    DataWriterService,
+)
 
 
 # ------------------------------------------------------------------------------
 # ManagerMQTT Class Definition
 # ------------------------------------------------------------------------------
-
 
 
 class ManagerMQTT:
@@ -42,7 +42,7 @@ class ManagerMQTT:
         self.client = MongoDBClient.get_client()
         self.config_db = self.client["config_db"]
         self.load_existing_instances()
-        self.data_writer = data_writer_service()
+        self.data_writer = DataWriterService()
 
         self.saving_thread = threading.Thread(target=self.save_messages)
         self.saving_thread.daemon = (
@@ -63,7 +63,6 @@ class ManagerMQTT:
             self.data_writer.write_data(topic, message)
             self.message_queue.task_done()
 
-
     def create_instance(self, instance_name):
         if instance_name in self.instances:
             raise Exception(f"Instance {instance_name} already exists")
@@ -72,7 +71,6 @@ class ManagerMQTT:
         mqtt_instance = MQTTService(config_mqtt, message_queue=self.message_queue)
         self.instances[instance_name] = mqtt_instance
 
-            
     def delete_instance(self, instance_name):
         if instance_name not in self.instances:
             raise Exception(f"Instance {instance_name} does not exist")
@@ -167,5 +165,3 @@ class ManagerMQTT:
             }
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
-
-
