@@ -87,32 +87,53 @@ class DataWriterService:
         )  
         try:
             topic_parts = topic.split("/")
-            database_name = topic_parts[0]
-            device_name = topic_parts[1]
-
-            # Find the schema for the database_name (formerly database)
-            schema = next(
-                (s for s in self.schemas if s["database"] == database_name), None
-            )
-            if not schema:
+            #database_name = topic_parts[0]
+            #device_name = topic_parts[1]
+            
+            # # Find the schema for the database_name (formerly database)
+            # schema = next(
+            #     (s for s in self.schemas if s["database"] == database_name), None
+            # )
+            # if not schema:
+            #     return
+            actual_schema=None
+            # collection_names = schema["sub_schemas"]
+            found_the_device =False
+            schemas=self.schemas
+            for topic_part in topic_parts:
+                for schema in schemas:
+                    for sub_schema in schema["sub_schemas"]:
+                        if topic_part in sub_schema["devices"]:
+                            #print("sub_schema : ",sub_schema)
+                            #print(f"""sub_schema["devices"] :{sub_schema["devices"]}""")
+                            #print("topic_part",topic_part)
+                            device_name = topic_part
+                            database_name=topic_part
+                            actual_schema=sub_schema
+                            found_the_device=True
+                            print("OKKKKKKKK")
+                            break
+                    if  found_the_device:
+                        break
+                if  found_the_device:
+                    break
+            if not found_the_device:
                 return
-
-            collection_names = schema["sub_schemas"]
+            if not actual_schema:
+                return
             collection_name = None
             path_mapping = None
             data_mapping = None
-
-            for sub in collection_names:
-                if device_name in sub["devices"]:
-                    print(f"""{device_name} in {sub["devices"]}""")
-                    for topic_pattern in sub["topics"]:
-                        if mqtt.topic_matches_sub(topic_pattern, topic):
-                            collection_name = sub["collection"]
-                            path_mapping = sub.get("path_mapping", {})
-                            data_mapping = sub.get("data_mapping", {})
-                            break
-                    if collection_name:
-                        break
+            print("device_name:",device_name)
+            print("actual_schema",actual_schema)
+            print(f"""this device {device_name} in {actual_schema["devices"]}""")
+            for topic_pattern in actual_schema["topics"]:
+                print(f"topic asked for {topic_pattern} and topic received {topic}")
+                if mqtt.topic_matches_sub(topic_pattern, topic):
+                    collection_name = actual_schema["collection"]
+                    path_mapping = actual_schema.get("path_mapping", {})
+                    data_mapping = actual_schema.get("data_mapping", {})
+                    break
 
             if not collection_name:
                 return
@@ -152,7 +173,7 @@ class DataWriterService:
                 elif "subpath" in path_mapping:
                     path_name = self.evaluate_expression(raw_data, path_mapping["subpath"])
                     specific_collection_name = (
-                        f"{collection_name}|{device_name}|{path_name}"
+                        f"{device_name}|{path_name}"
                     )
                     print(f"Specific collection name: {specific_collection_name}")
                     if (
@@ -172,19 +193,20 @@ class DataWriterService:
                     print(f"No path mapping found for '{key}'. Skipping...")
 
             if specific_collection_name == "":
-                specific_collection_name = f"{collection_name}|{device_name}"
+                specific_collection_name = f"{device_name}"
                 print("specific_collection_name:", specific_collection_name)
                 self.create_time_series_collection(
                     database_name, specific_collection_name, "timestamp", "metadata"
                 )
+            print("specific_collection_name")
             metadata = {
                 "database": database_name,
-                "collection": collection_name,
+                "type": collection_name,
                 "device_name": device_name,
                 "path": topic,
             }
             document = {
-                "timestamp": datetime.utcnow(),
+                "timestamp": datetime.now(),
                 "metadata": metadata,
                 "data": transformed_data,
             }
@@ -192,7 +214,7 @@ class DataWriterService:
             print(f"Document to insert: {document}")
             self.client[database_name][specific_collection_name].insert_one(document)
             print(
-                f"Inserted document into {database_name}/{collection_name}/{device_name}: {document}"
+                f"Inserted document into {database_name}/{device_name}: {document}"
             )
 
         except Exception as e:

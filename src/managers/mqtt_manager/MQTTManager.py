@@ -54,7 +54,7 @@ class ManagerMQTT:
         collections = self.config_db.list_collection_names()
         for collection in collections:
             self.create_instance(collection)
-            print("collection: ", collection)
+            #print("collection: ", collection)
 
     def save_messages(self):
         while True:
