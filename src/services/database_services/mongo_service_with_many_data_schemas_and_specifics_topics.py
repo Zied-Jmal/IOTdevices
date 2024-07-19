@@ -6,7 +6,10 @@ import re
 from src.modules.database_modules.database import (
     MongoDBClient,
 )  # Adjust import based on your project structure
+import logging
 
+# Suppress debug messages from MongoDB driver
+logging.getLogger('pymongo').setLevel(logging.WARNING)
 
 class DataWriterService:
     def __init__(self):
