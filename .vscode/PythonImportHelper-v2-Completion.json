@@ -529,6 +529,15 @@
         "documentation": {}
     },
     {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config4\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(",
+        "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
+        "documentation": {}
+    },
+    {
         "label": "DataWriter",
         "kind": 6,
         "importPath": "src.services.database_services.writer_database",
