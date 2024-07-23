@@ -33,7 +33,7 @@ from src.services.database_services.mongo_service_with_many_data_schemas_and_spe
 
 
 class ManagerMQTT:
-    def __init__(self, config_file):
+    def __init__(self):
         self.thread = None
         self.running = False
         self.message_queue = queue.Queue()

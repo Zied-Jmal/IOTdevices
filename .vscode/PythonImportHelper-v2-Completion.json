@@ -639,7 +639,7 @@
         "kind": 6,
         "importPath": "src.managers.mqtt_manager.MQTTManager",
         "description": "src.managers.mqtt_manager.MQTTManager",
-        "peekOfCode": "class ManagerMQTT:\n    def __init__(self, config_file):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = DataWriterService()",
+        "peekOfCode": "class ManagerMQTT:\n    def __init__(self):\n        self.thread = None\n        self.running = False\n        self.message_queue = queue.Queue()\n        self.instances = {}\n        self.client = MongoDBClient.get_client()\n        self.config_db = self.client[\"config_db\"]\n        self.load_existing_instances()\n        self.data_writer = DataWriterService()",
         "detail": "src.managers.mqtt_manager.MQTTManager",
         "documentation": {}
     },
@@ -675,7 +675,7 @@
         "kind": 6,
         "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
-        "peekOfCode": "class DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config4\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(\n        self, db_name, collection_name, time_field, meta_field, granularity=\"seconds\"",
+        "peekOfCode": "class DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(\n        self, db_name, collection_name, time_field, meta_field, granularity=\"seconds\"",
         "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "documentation": {}
     },
@@ -684,7 +684,7 @@
         "kind": 5,
         "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
-        "peekOfCode": "logger = logging.getLogger(__name__)\nclass DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config4\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(",
         "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "documentation": {}
     },
@@ -711,7 +711,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def run_server_config(port):\n    from src.api.config_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"127.0.0.1\", port=port)\ndef run_server_extract(port):\n    from src.api.extract_data_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"127.0.0.1\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports",
+        "peekOfCode": "def run_server_config(port):\n    from src.api.config_api import (\n        app,\n    )  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"0.0.0.0\", port=port)\ndef run_server_extract(port):\n    from src.api.extract_data_api import (\n        app,\n    )  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"0.0.0.0\", port=port)",
         "detail": "main",
         "documentation": {}
     },
@@ -720,7 +720,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def run_server_extract(port):\n    from src.api.extract_data_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"127.0.0.1\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports\n    p1 = multiprocessing.Process(target=run_server_config, args=(port1,))\n    p2 = multiprocessing.Process(target=run_server_extract, args=(port2,))\n    p1.start()",
+        "peekOfCode": "def run_server_extract(port):\n    from src.api.extract_data_api import (\n        app,\n    )  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"0.0.0.0\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports\n    p1 = multiprocessing.Process(target=run_server_config, args=(port1,))",
         "detail": "main",
         "documentation": {}
     }

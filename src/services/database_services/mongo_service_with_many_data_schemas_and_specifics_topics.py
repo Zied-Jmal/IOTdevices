@@ -18,7 +18,7 @@ class DataWriterService:
         self.client = MongoDBClient.get_client()
 
         # Load schemas from MongoDB
-        self.schemas_cursor = self.client["schemas_config4"]["schemas"].find()
+        self.schemas_cursor = self.client["schemas_config"]["schemas"].find()
         self.schemas = list(
             self.schemas_cursor
         )  # Convert cursor to list for easier access
