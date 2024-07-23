@@ -648,7 +648,7 @@
         "kind": 6,
         "importPath": "src.modules.database_modules.database",
         "description": "src.modules.database_modules.database",
-        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            MongoDBClient._client = MongoClient(\"mongodb://localhost:27017/\")\n        return MongoDBClient._client\n    @staticmethod\n    def get_template(collection_name):\n        client = MongoDBClient.get_client()",
+        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            mongo_url = os.getenv(\"MONGO_URL\", \"mongodb://localhost:27017/\")\n            MongoDBClient._client = MongoClient(mongo_url)\n        return MongoDBClient._client\n    @staticmethod\n    def get_template(collection_name):",
         "detail": "src.modules.database_modules.database",
         "documentation": {}
     },

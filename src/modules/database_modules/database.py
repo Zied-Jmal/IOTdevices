@@ -1,4 +1,5 @@
 # database.py
+import os
 from pymongo import MongoClient
 
 
@@ -8,7 +9,8 @@ class MongoDBClient:
     @staticmethod
     def get_client():
         if MongoDBClient._client is None:
-            MongoDBClient._client = MongoClient("mongodb://localhost:27017/")
+            mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017/")
+            MongoDBClient._client = MongoClient(mongo_url)
         return MongoDBClient._client
 
     @staticmethod
