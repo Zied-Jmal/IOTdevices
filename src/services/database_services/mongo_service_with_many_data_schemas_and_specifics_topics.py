@@ -112,7 +112,7 @@ class DataWriterService:
         except Exception as e:
             logger.error(f"Failed to save or update metadata: {e}")
     def write_data(self, topic, message):
-        self.schemas_cursor = self.client["schemas_config4"]["schemas"].find()
+        self.schemas_cursor = self.client["schemas_config"]["schemas"].find()
         self.schemas = list(self.schemas_cursor)
         try:
             topic_parts = topic.split("/")
