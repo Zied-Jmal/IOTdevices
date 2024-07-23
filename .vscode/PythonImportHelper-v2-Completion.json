@@ -9,15 +9,6 @@
         "documentation": {}
     },
     {
-        "label": "sys",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "sys",
-        "description": "sys",
-        "detail": "sys",
-        "documentation": {}
-    },
-    {
         "label": "FastAPI",
         "importPath": "fastapi",
         "description": "fastapi",
@@ -66,15 +57,7 @@
         "documentation": {}
     },
     {
-        "label": "Depends",
-        "importPath": "fastapi",
-        "description": "fastapi",
-        "isExtraImport": true,
-        "detail": "fastapi",
-        "documentation": {}
-    },
-    {
-        "label": "FastAPI",
+        "label": "Query",
         "importPath": "fastapi",
         "description": "fastapi",
         "isExtraImport": true,
@@ -90,44 +73,11 @@
         "documentation": {}
     },
     {
-        "label": "File",
-        "importPath": "fastapi",
-        "description": "fastapi",
-        "isExtraImport": true,
-        "detail": "fastapi",
-        "documentation": {}
-    },
-    {
-        "label": "UploadFile",
-        "importPath": "fastapi",
-        "description": "fastapi",
-        "isExtraImport": true,
-        "detail": "fastapi",
-        "documentation": {}
-    },
-    {
         "label": "Query",
         "importPath": "fastapi",
         "description": "fastapi",
         "isExtraImport": true,
         "detail": "fastapi",
-        "documentation": {}
-    },
-    {
-        "label": "BaseModel",
-        "importPath": "pydantic",
-        "description": "pydantic",
-        "isExtraImport": true,
-        "detail": "pydantic",
-        "documentation": {}
-    },
-    {
-        "label": "threading",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "threading",
-        "description": "threading",
-        "detail": "threading",
         "documentation": {}
     },
     {
@@ -140,16 +90,63 @@
         "documentation": {}
     },
     {
-        "label": "queue",
-        "kind": 6,
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
         "isExtraImport": true,
-        "importPath": "queue",
-        "description": "queue",
-        "detail": "queue",
+        "detail": "enum",
         "documentation": {}
     },
     {
-        "label": "Literal",
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -173,7 +170,7 @@
         "documentation": {}
     },
     {
-        "label": "Literal",
+        "label": "Any",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -181,28 +178,11 @@
         "documentation": {}
     },
     {
-        "label": "Enum",
-        "importPath": "enum",
-        "description": "enum",
+        "label": "Literal",
+        "importPath": "typing",
+        "description": "typing",
         "isExtraImport": true,
-        "detail": "enum",
-        "documentation": {}
-    },
-    {
-        "label": "Enum",
-        "importPath": "enum",
-        "description": "enum",
-        "isExtraImport": true,
-        "detail": "enum",
-        "documentation": {}
-    },
-    {
-        "label": "logging",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "logging",
-        "description": "logging",
-        "detail": "logging",
+        "detail": "typing",
         "documentation": {}
     },
     {
@@ -214,23 +194,15 @@
         "documentation": {}
     },
     {
-        "label": "MongoDBClient",
-        "importPath": "database",
-        "description": "database",
-        "isExtraImport": true,
-        "detail": "database",
-        "documentation": {}
-    },
-    {
-        "label": "ObjectId",
-        "importPath": "bson",
-        "description": "bson",
-        "isExtraImport": true,
-        "detail": "bson",
-        "documentation": {}
-    },
-    {
         "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
         "importPath": "datetime",
         "description": "datetime",
         "isExtraImport": true,
@@ -262,19 +234,12 @@
         "documentation": {}
     },
     {
-        "label": "ConfigMQTT",
-        "importPath": "src.modules.mqtt_modules.config_mqtt",
-        "description": "src.modules.mqtt_modules.config_mqtt",
+        "label": "logging",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "src.modules.mqtt_modules.config_mqtt",
-        "documentation": {}
-    },
-    {
-        "label": "ConfigMQTT",
-        "importPath": "src.modules.mqtt_modules.config_mqtt",
-        "description": "src.modules.mqtt_modules.config_mqtt",
-        "isExtraImport": true,
-        "detail": "src.modules.mqtt_modules.config_mqtt",
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
         "documentation": {}
     },
     {
@@ -291,6 +256,48 @@
         "description": "src.modules.database_modules.database",
         "isExtraImport": true,
         "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "MongoDBClient",
+        "importPath": "src.modules.database_modules.database",
+        "description": "src.modules.database_modules.database",
+        "isExtraImport": true,
+        "detail": "src.modules.database_modules.database",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "queue",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "queue",
+        "description": "queue",
+        "detail": "queue",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigMQTT",
+        "importPath": "src.modules.mqtt_modules.config_mqtt",
+        "description": "src.modules.mqtt_modules.config_mqtt",
+        "isExtraImport": true,
+        "detail": "src.modules.mqtt_modules.config_mqtt",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigMQTT",
+        "importPath": "src.modules.mqtt_modules.config_mqtt",
+        "description": "src.modules.mqtt_modules.config_mqtt",
+        "isExtraImport": true,
+        "detail": "src.modules.mqtt_modules.config_mqtt",
         "documentation": {}
     },
     {
@@ -385,6 +392,15 @@
         "documentation": {}
     },
     {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
         "label": "time",
         "kind": 6,
         "isExtraImport": true,
@@ -423,64 +439,199 @@
     {
         "label": "PublishRequest",
         "kind": 6,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
         "peekOfCode": "class PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str\n    value: str\nclass NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str",
-        "detail": "src.api.config_api.config_api",
+        "detail": "src.api.config_api",
         "documentation": {}
     },
     {
         "label": "ConfigRequest",
         "kind": 6,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
         "peekOfCode": "class ConfigRequest(BaseModel):\n    key: str\n    value: str\nclass NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str\nclass QosEnum(int, Enum):\n    low = 0\n    medium = 1",
-        "detail": "src.api.config_api.config_api",
+        "detail": "src.api.config_api",
         "documentation": {}
     },
     {
         "label": "NestedConfigRequest",
         "kind": 6,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
         "peekOfCode": "class NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str\nclass QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\n#! Red (!)\n# ? Blue (?)",
-        "detail": "src.api.config_api.config_api",
+        "detail": "src.api.config_api",
         "documentation": {}
     },
     {
         "label": "QosEnum",
         "kind": 6,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
         "peekOfCode": "class QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\n#! Red (!)\n# ? Blue (?)\n# * Green (*)\n# ^ Yellow (^)\n# & Pink (&)\n# ~ Purple (~)",
-        "detail": "src.api.config_api.config_api",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "SubSchema",
+        "kind": 6,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "class SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]\nclass SchemaUpdate(BaseModel):\n    database: Optional[str]",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "Schema",
+        "kind": 6,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "class Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]\nclass SchemaUpdate(BaseModel):\n    database: Optional[str]\n    sub_schemas: Optional[List[SubSchema]]\n# CRUD operations\n@app.post(\"/schemas/\", response_model=Dict[str, Any])\ndef create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "SchemaUpdate",
+        "kind": 6,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "class SchemaUpdate(BaseModel):\n    database: Optional[str]\n    sub_schemas: Optional[List[SubSchema]]\n# CRUD operations\n@app.post(\"/schemas/\", response_model=Dict[str, Any])\ndef create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "create_schema",
+        "kind": 2,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "def create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )\n    result = db[\"schemas\"].insert_one(schema.model_dump())\n    return {\"inserted_id\": str(result.inserted_id)}\n@app.get(\"/schemas/\", response_model=List[Dict[str, Any]])\ndef read_schemas():\n    schemas = list(db[\"schemas\"].find())",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "read_schemas",
+        "kind": 2,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "def read_schemas():\n    schemas = list(db[\"schemas\"].find())\n    for schema in schemas:\n        schema[\"_id\"] = str(schema[\"_id\"])\n    return schemas\n@app.get(\"/schemas/{database}\", response_model=Dict[str, Any])\ndef read_schema(database: str):\n    schema = db[\"schemas\"].find_one({\"database\": database})\n    if schema:\n        schema[\"_id\"] = str(schema[\"_id\"])",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "read_schema",
+        "kind": 2,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "def read_schema(database: str):\n    schema = db[\"schemas\"].find_one({\"database\": database})\n    if schema:\n        schema[\"_id\"] = str(schema[\"_id\"])\n        return schema\n    raise HTTPException(status_code=404, detail=\"Schema not found\")\n@app.put(\"/schemas/{database}\", response_model=Dict[str, Any])\ndef update_schema(database: str, schema_update: SchemaUpdate):\n    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}\n    if update_data:",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "update_schema",
+        "kind": 2,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "def update_schema(database: str, schema_update: SchemaUpdate):\n    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}\n    if update_data:\n        result = db[\"schemas\"].update_one({\"database\": database}, {\"$set\": update_data})\n        if result.matched_count == 1:\n            return db[\"schemas\"].find_one({\"database\": database})\n    raise HTTPException(status_code=404, detail=\"Schema not found or no changes made\")\n@app.delete(\"/schemas/{database}\", response_model=Dict[str, Any])\ndef delete_schema(database: str):\n    result = db[\"schemas\"].delete_one({\"database\": database})",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "delete_schema",
+        "kind": 2,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "def delete_schema(database: str):\n    result = db[\"schemas\"].delete_one({\"database\": database})\n    if result.deleted_count == 1:\n        return {\"deleted_database\": database}\n    raise HTTPException(status_code=404, detail=\"Schema not found\")",
+        "detail": "src.api.config_api",
         "documentation": {}
     },
     {
         "label": "app",
         "kind": 5,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
-        "peekOfCode": "app = FastAPI()\nmanager = ManagerMQTT(\"your_config_file.json\")\n# ------------------------------------------------------------------------------\n# request_body\n# ------------------------------------------------------------------------------\nclass PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str",
-        "detail": "src.api.config_api.config_api",
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "app = FastAPI()\nmanager = ManagerMQTT()\n# ------------------------------------------------------------------------------\n# request_body\n# ------------------------------------------------------------------------------\nclass PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str",
+        "detail": "src.api.config_api",
         "documentation": {}
     },
     {
         "label": "manager",
         "kind": 5,
-        "importPath": "src.api.config_api.config_api",
-        "description": "src.api.config_api.config_api",
-        "peekOfCode": "manager = ManagerMQTT(\"your_config_file.json\")\n# ------------------------------------------------------------------------------\n# request_body\n# ------------------------------------------------------------------------------\nclass PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str\n    value: str",
-        "detail": "src.api.config_api.config_api",
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "manager = ManagerMQTT()\n# ------------------------------------------------------------------------------\n# request_body\n# ------------------------------------------------------------------------------\nclass PublishRequest(BaseModel):\n    topic: str\n    payload: str\nclass ConfigRequest(BaseModel):\n    key: str\n    value: str",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "client = manager.client\ndb = client[\"schemas_config\"]\n# Pydantic models\nclass SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "db = client[\"schemas_config\"]\n# Pydantic models\nclass SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "Metadata",
+        "kind": 6,
+        "importPath": "src.api.extract_data_api",
+        "description": "src.api.extract_data_api",
+        "peekOfCode": "class Metadata(BaseModel):\n    database: str\n    device_name: str\n    path: str\n    type: str\nclass DataPoint(BaseModel):\n    timestamp: datetime\n    metadata: Dict[str, Any]\n    data: Dict[str, Any]\n@app.get(\"/test_query\")",
+        "detail": "src.api.extract_data_api",
+        "documentation": {}
+    },
+    {
+        "label": "DataPoint",
+        "kind": 6,
+        "importPath": "src.api.extract_data_api",
+        "description": "src.api.extract_data_api",
+        "peekOfCode": "class DataPoint(BaseModel):\n    timestamp: datetime\n    metadata: Dict[str, Any]\n    data: Dict[str, Any]\n@app.get(\"/test_query\")\nasync def test_query(\n    database: str = Query(..., description=\"Name of the database\"),\n    collection: str = Query(..., description=\"Name of the collection\"),\n):\n    coll = get_collection(database, collection)",
+        "detail": "src.api.extract_data_api",
+        "documentation": {}
+    },
+    {
+        "label": "get_collection",
+        "kind": 2,
+        "importPath": "src.api.extract_data_api",
+        "description": "src.api.extract_data_api",
+        "peekOfCode": "def get_collection(database: str, collection: str):\n    db = client[database]\n    return db[collection]\nclass Metadata(BaseModel):\n    database: str\n    device_name: str\n    path: str\n    type: str\nclass DataPoint(BaseModel):\n    timestamp: datetime",
+        "detail": "src.api.extract_data_api",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "src.api.extract_data_api",
+        "description": "src.api.extract_data_api",
+        "peekOfCode": "logger = logging.getLogger(__name__)\napp = FastAPI()\n# MongoDB connection setup\nclient = MongoDBClient.get_client()\ndef get_collection(database: str, collection: str):\n    db = client[database]\n    return db[collection]\nclass Metadata(BaseModel):\n    database: str\n    device_name: str",
+        "detail": "src.api.extract_data_api",
         "documentation": {}
     },
     {
         "label": "app",
         "kind": 5,
-        "importPath": "src.managers.database_manager.reader_database",
-        "description": "src.managers.database_manager.reader_database",
-        "peekOfCode": "app = FastAPI()\nasync def get_db():\n    client = MongoDBClient.get_client()\n    return client\n@app.get(\"/\")\nasync def read_root():\n    return {\"message\": \"Welcome to the FastAPI MongoDB application\"}\n@app.get(\"/databases\")\nasync def list_databases(db=Depends(get_db)) -> List[str]:\n    return db.list_database_names()",
-        "detail": "src.managers.database_manager.reader_database",
+        "importPath": "src.api.extract_data_api",
+        "description": "src.api.extract_data_api",
+        "peekOfCode": "app = FastAPI()\n# MongoDB connection setup\nclient = MongoDBClient.get_client()\ndef get_collection(database: str, collection: str):\n    db = client[database]\n    return db[collection]\nclass Metadata(BaseModel):\n    database: str\n    device_name: str\n    path: str",
+        "detail": "src.api.extract_data_api",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "src.api.extract_data_api",
+        "description": "src.api.extract_data_api",
+        "peekOfCode": "client = MongoDBClient.get_client()\ndef get_collection(database: str, collection: str):\n    db = client[database]\n    return db[collection]\nclass Metadata(BaseModel):\n    database: str\n    device_name: str\n    path: str\n    type: str\nclass DataPoint(BaseModel):",
+        "detail": "src.api.extract_data_api",
         "documentation": {}
     },
     {
@@ -556,11 +707,20 @@
         "documentation": {}
     },
     {
-        "label": "run_server",
+        "label": "run_server_config",
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def run_server(port):\n    from src.api.config_api.config_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"0.0.0.0\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports\n    p1 = multiprocessing.Process(target=run_server, args=(port1,))\n    p2 = multiprocessing.Process(target=run_server, args=(port2,))\n    p1.start()",
+        "peekOfCode": "def run_server_config(port):\n    from src.api.config_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"127.0.0.1\", port=port)\ndef run_server_extract(port):\n    from src.api.extract_data_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"127.0.0.1\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "run_server_extract",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def run_server_extract(port):\n    from src.api.extract_data_api import app  # Replace 'your_fastapi_app' with the name of your FastAPI script without the .py extension\n    uvicorn.run(app, host=\"127.0.0.1\", port=port)\nif __name__ == \"__main__\":\n    port1 = 8001\n    port2 = 8002\n    # Create two processes to run two instances of the FastAPI app on different ports\n    p1 = multiprocessing.Process(target=run_server_config, args=(port1,))\n    p2 = multiprocessing.Process(target=run_server_extract, args=(port2,))\n    p1.start()",
         "detail": "main",
         "documentation": {}
     }

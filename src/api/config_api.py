@@ -1,14 +1,10 @@
 import os
-import sys
 from fastapi import FastAPI, HTTPException, File, UploadFile
-from pydantic import BaseModel
-import threading
 import shutil
 from fastapi import Query
-import queue
-from typing import Literal
 from enum import Enum
-import logging
+from pydantic import BaseModel
+from typing import List, Optional, Dict, Any
 
 from src.managers.mqtt_manager.MQTTManager import ManagerMQTT
 
@@ -17,7 +13,7 @@ from src.managers.mqtt_manager.MQTTManager import ManagerMQTT
 # ------------------------------------------------------------------------------
 app = FastAPI()
 
-manager = ManagerMQTT("your_config_file.json")
+manager = ManagerMQTT()
 
 
 # ------------------------------------------------------------------------------
@@ -84,8 +80,6 @@ async def get_config1(instance_name: str, key: str):
 # ------------------------------------------------------------------------------
 # FastAPI Routes :POST
 # ------------------------------------------------------------------------------
-
-
 
 
 # ------------------------------------------------------------------------------
@@ -236,8 +230,11 @@ async def set_instance_ssl_config(
     return manager.update_instance_configuration(instance_name, jsonTree, value=value)
 
 
-@app.post("/instances/{instance_name}/config/upload", tags=["update instance configuration"])
-async def upload_files(instance_name: str,
+@app.post(
+    "/instances/{instance_name}/config/upload", tags=["update instance configuration"]
+)
+async def upload_files(
+    instance_name: str,
     ca_certs: UploadFile = File(None),
     certfile: UploadFile = File(None),
     keyfile: UploadFile = File(None),
@@ -259,7 +256,9 @@ async def upload_files(instance_name: str,
         print("file uploaded: ", ca_certs_path)
         value = file_paths["ca_certs"]
         jsonTree = ["settings", "ca_certs"]
-        return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+        return manager.update_instance_configuration(
+            instance_name, jsonTree, value=value
+        )
     if certfile:
         certfile_path = os.path.join(UPLOAD_DIR, certfile.filename)
         with open(certfile_path, "wb") as buffer:
@@ -301,3 +300,74 @@ async def set_instance_auth_config(
     jsonTree = ["settings", "auth"]
 
     return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+
+# ------------------------------------------------------------------------------
+# POST: update schemas configuration
+# ------------------------------------------------------------------------------
+client = manager.client
+db = client["schemas_config"]
+
+
+# Pydantic models
+class SubSchema(BaseModel):
+    collection: str
+    devices: List[str]
+    topics: List[str]
+    data_mapping: Dict[str, str]
+
+
+class Schema(BaseModel):
+    database: str
+    sub_schemas: List[SubSchema]
+
+
+class SchemaUpdate(BaseModel):
+    database: Optional[str]
+    sub_schemas: Optional[List[SubSchema]]
+
+
+# CRUD operations
+@app.post("/schemas/", response_model=Dict[str, Any])
+def create_schema(schema: Schema):
+    if db["schemas"].find_one({"database": schema.database}):
+        raise HTTPException(
+            status_code=400, detail="Schema with this database already exists"
+        )
+    result = db["schemas"].insert_one(schema.model_dump())
+    return {"inserted_id": str(result.inserted_id)}
+
+
+@app.get("/schemas/", response_model=List[Dict[str, Any]])
+def read_schemas():
+    schemas = list(db["schemas"].find())
+    for schema in schemas:
+        schema["_id"] = str(schema["_id"])
+    return schemas
+
+
+@app.get("/schemas/{database}", response_model=Dict[str, Any])
+def read_schema(database: str):
+    schema = db["schemas"].find_one({"database": database})
+    if schema:
+        schema["_id"] = str(schema["_id"])
+        return schema
+    raise HTTPException(status_code=404, detail="Schema not found")
+
+
+@app.put("/schemas/{database}", response_model=Dict[str, Any])
+def update_schema(database: str, schema_update: SchemaUpdate):
+    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}
+    if update_data:
+        result = db["schemas"].update_one({"database": database}, {"$set": update_data})
+        if result.matched_count == 1:
+            return db["schemas"].find_one({"database": database})
+    raise HTTPException(status_code=404, detail="Schema not found or no changes made")
+
+
+@app.delete("/schemas/{database}", response_model=Dict[str, Any])
+def delete_schema(database: str):
+    result = db["schemas"].delete_one({"database": database})
+    if result.deleted_count == 1:
+        return {"deleted_database": database}
+    raise HTTPException(status_code=404, detail="Schema not found")
