@@ -1,3 +1,4 @@
+import json
 import os
 from fastapi import FastAPI, HTTPException, File, UploadFile
 import shutil
@@ -5,6 +6,7 @@ from fastapi import Query
 from enum import Enum
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
+from fastapi.responses import JSONResponse
 
 from src.managers.mqtt_manager.MQTTManager import ManagerMQTT
 
@@ -314,6 +316,7 @@ class SubSchema(BaseModel):
     collection: str
     devices: List[str]
     topics: List[str]
+    path_mapping: Dict[str, str]
     data_mapping: Dict[str, str]
 
 
@@ -335,6 +338,7 @@ def create_schema(schema: Schema):
             status_code=400, detail="Schema with this database already exists"
         )
     result = db["schemas"].insert_one(schema.model_dump())
+    print("222222")
     return {"inserted_id": str(result.inserted_id)}
 
 
@@ -358,10 +362,20 @@ def read_schema(database: str):
 @app.put("/schemas/{database}", response_model=Dict[str, Any])
 def update_schema(database: str, schema_update: SchemaUpdate):
     update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}
+
     if update_data:
         result = db["schemas"].update_one({"database": database}, {"$set": update_data})
+
         if result.matched_count == 1:
-            return db["schemas"].find_one({"database": database})
+            # Fetch the updated document
+            updated_schema = db["schemas"].find_one({"database": database})
+
+            # Convert ObjectId to string
+            if updated_schema and "_id" in updated_schema:
+                updated_schema["_id"] = str(updated_schema["_id"])
+
+            # Return the updated schema as a JSON response
+            return JSONResponse(content=updated_schema)
     raise HTTPException(status_code=404, detail="Schema not found or no changes made")
 
 

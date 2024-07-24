@@ -9,7 +9,7 @@ class MongoDBClient:
     @staticmethod
     def get_client():
         if MongoDBClient._client is None:
-            mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017/")
+            mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27018/")
             MongoDBClient._client = MongoClient(mongo_url)
         return MongoDBClient._client
 

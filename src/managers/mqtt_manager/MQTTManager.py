@@ -59,7 +59,7 @@ class ManagerMQTT:
     def save_messages(self):
         while True:
             topic, message = self.message_queue.get()
-            print(f"Queue received topic: {topic}, message: {message}")
+            #print(f"Queue received topic: {topic}, message: {message}")
             self.data_writer.write_data(topic, message)
             self.message_queue.task_done()
 

@@ -13,6 +13,7 @@ logging.getLogger("pymongo").setLevel(logging.WARNING)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class DataWriterService:
     def __init__(self):
         self.client = MongoDBClient.get_client()
@@ -53,17 +54,74 @@ class DataWriterService:
             )
 
     def get_value(self, data, path):
-        keys = re.split(r"\.|\[|\]\[|\]", path)
-        keys = [key for key in keys if key]  # Remove empty strings
-        for key in keys:
-            if key.isdigit():
-                key = int(key)
-            data = data[key]
-        return data
+        try:
+            keys = re.split(r"\.|\[|\]\[|\]", path)
+            keys = [key for key in keys if key]  # Remove empty strings
+            for key in keys:
+                if key.isdigit():
+                    key = int(key)
+                data = data[key]
+            return data
+        except TypeError as e:
+            print(f"Caught Allowed TypeError of : {e}")
+            return data
+        except Exception as e:
+            print(f"Caught a general exception: {e}")
+
+    # def mqtt_to_regex_pattern(self,mqtt_pattern):
+
+    #     # Escape the pattern to handle special characters
+    #     regex_pattern = re.escape(mqtt_pattern)
+
+    #     # Replace the MQTT wildcards with regex equivalents
+    #     regex_pattern = regex_pattern.replace(r"\+", r"([^/]+)")
+    #     regex_pattern = regex_pattern.replace(r"\#", r"(.*)")
+
+    #     return regex_pattern
+
+    # def extract_last_element(self,mqtt_topic, mqtt_pattern):
+
+    #     # Convert the MQTT pattern to a regex pattern
+    #     regex_pattern = self.mqtt_to_regex_pattern(mqtt_pattern)
+
+    #     # Add start and end anchors to the pattern
+    #     regex_pattern = "^" + regex_pattern + "$"
+
+    #     # Search for a match
+    #     match = re.match(regex_pattern, mqtt_topic)
+
+    #     if match:
+    #         # Extract the last captured group
+    #         last_element = match.groups()[-1]
+    #         return last_element
+    #     else:
+    #         return None
+    def extract_last_wildcard_element(self, topic, pattern):
+        pattern_parts = pattern.split("/")
+        topic_parts = topic.split("/")
+
+        # Check if the topic has fewer segments than the pattern
+        if len(topic_parts) < len(pattern_parts):
+            raise ValueError("Topic does not have enough segments to match the pattern")
+
+        # Find the position of the last '+' or '#' in the pattern
+        last_wildcard_index = -1
+        for i in range(len(pattern_parts)):
+            if pattern_parts[i] in ("+", "#"):
+                last_wildcard_index = i
+
+        if last_wildcard_index == -1:
+            raise ValueError("Pattern does not contain '+' or '#'")
+
+        # Handle the '#' wildcard by taking all remaining parts
+        if pattern_parts[last_wildcard_index] == "#":
+            return "/".join(topic_parts[last_wildcard_index:])
+
+        return topic_parts[last_wildcard_index]
 
     def evaluate_expression(self, data, expression):
         path_expr = self.parse_expression(expression)
-
+        print(f"evaluate_expression ===> path_expr : {path_expr}")
         # Evaluate path expression to get data
         return self.get_value(data, path_expr)
 
@@ -84,6 +142,7 @@ class DataWriterService:
             return self.evaluate_expression(data, template)
         else:
             return template
+
     def save_metadata(self, db_name: str, collection_name: str, metadata: dict):
         try:
             metadata_collection = self.client["metadata"][db_name]
@@ -99,18 +158,21 @@ class DataWriterService:
             }
             # Update the document if it exists, otherwise insert a new one
             result = metadata_collection.find_one_and_update(
-                query,
-                update,
-                upsert=True  # Create a new document if none exists
+                query, update, upsert=True  # Create a new document if none exists
             )
-            
+            print(f"resulu : {result}")
             if result.matched_count:
-                logger.info(f"Updated metadata for collection '{collection_name}' in {db_name}/metadata.")
+                logger.info(
+                    f"Updated metadata for collection '{collection_name}' in {db_name}/metadata."
+                )
             else:
-                logger.info(f"Inserted new metadata for collection '{collection_name}' in {db_name}/metadata.")
-            
+                logger.info(
+                    f"Inserted new metadata for collection '{collection_name}' in {db_name}/metadata."
+                )
+
         except Exception as e:
             logger.error(f"Failed to save or update metadata: {e}")
+
     def write_data(self, topic, message):
         self.schemas_cursor = self.client["schemas_config"]["schemas"].find()
         self.schemas = list(self.schemas_cursor)
@@ -140,7 +202,7 @@ class DataWriterService:
                             database_name = topic_part
                             actual_schema = sub_schema
                             found_the_device = True
-                            logger.info("OKKKKKKKK")
+                            print("OK")
                             break
                     if found_the_device:
                         break
@@ -153,11 +215,11 @@ class DataWriterService:
             collection_name = None
             path_mapping = None
             data_mapping = None
-            logger.info("device_name:", device_name)
-            logger.info("actual_schema", actual_schema)
             logger.info(f"""this device {device_name} in {actual_schema["devices"]}""")
             for topic_pattern in actual_schema["topics"]:
-                logger.info(f"topic asked for {topic_pattern} and topic received {topic}")
+                logger.info(
+                    f"topic asked for {topic_pattern} and topic received {topic}"
+                )
                 if mqtt.topic_matches_sub(topic_pattern, topic):
                     collection_name = actual_schema["collection"]
                     path_mapping = actual_schema.get("path_mapping", {})
@@ -166,7 +228,7 @@ class DataWriterService:
 
             if not collection_name:
                 return
-            logger.info("collection_name : ", collection_name)
+            logger.info(f"collection_name : {collection_name}")
             raw_data = json.loads(message)
             logger.info(f"Raw data: {raw_data}")
             specific_collection_name = ""
@@ -178,9 +240,7 @@ class DataWriterService:
                 logger.info(f"data_mapping: {data_mapping}")
                 if key in path_mapping:
                     path_name = self.evaluate_expression(raw_data, path_mapping[key])
-                    specific_collection_name = (
-                        f"{path_name}"
-                    )
+                    specific_collection_name = f"{path_name}"
                     logger.info(f"Specific collection name: {specific_collection_name}")
                     if (
                         specific_collection_name
@@ -190,15 +250,39 @@ class DataWriterService:
                             database_name,
                             specific_collection_name,
                             "timestamp",
-                            "metadata",
                         )
                     transformed_data[key] = self.evaluate_expression(
                         raw_data, path_expr
                     )
                 elif "NOsubpath" in path_mapping:
-                    transformed_data[key] = self.evaluate_expression(
-                        raw_data, path_expr
+                    print(f"path_expr : {path_expr}")
+                    print(f"raw_data : {raw_data}")
+                    topic_path_mapping = path_mapping["NOsubpath"]
+                    print(f"transformed_data :{transformed_data} | key : {key}")
+
+                    path_name = self.extract_last_wildcard_element(
+                        topic, topic_path_mapping
                     )
+                    print(f"path_name {path_name} ")
+                    specific_collection_name = f"{path_name}"
+                    logger.info(f"Specific collection name: {specific_collection_name}")
+                    topic_pattern = data_mapping[key]
+                    if mqtt.topic_matches_sub(topic_pattern, topic):
+                        print(f"topic_pattern : {topic_pattern}")
+                        print(f"raw_data : {raw_data}")
+                        transformed_data[key] = raw_data
+                        print(f"transformed_data[{key}] : {transformed_data[key]}")
+
+                    #topic_pattern2 = "shellies/+/emeter/+/hourly-energy"
+                    self.create_time_series_collection(
+                            database_name,
+                            specific_collection_name,
+                            "timestamp",
+                            # "metadata",
+                        )
+                    #if mqtt.topic_matches_sub(topic_pattern2, topic):
+                        #print(f"raw_data_topic_pattern2 : {raw_data}")
+
                 elif "subpath" in path_mapping:
                     path_name = self.evaluate_expression(
                         raw_data, path_mapping["subpath"]
@@ -213,7 +297,7 @@ class DataWriterService:
                             database_name,
                             specific_collection_name,
                             "timestamp",
-                            "metadata",
+                            # "metadata",
                         )
                     transformed_data[key] = self.evaluate_expression(
                         raw_data, path_expr
@@ -237,16 +321,21 @@ class DataWriterService:
             }
             document = {
                 "timestamp": datetime.now(),
-                "metadata": metadata,
+                # "metadata": metadata,
                 "data": transformed_data,
             }
             logger.info(f"Metadata: {metadata}")
             logger.info(f"Document to insert: {document}")
             self.client[database_name][specific_collection_name].insert_one(document)
-            logger.info(f"Inserted document into {database_name}/{specific_collection_name}: {document}")
+            logger.info(
+                f"Inserted document into {database_name}/{specific_collection_name}: {document}"
+            )
             # Save metadata to the metadata database
             logger.info(f"Saving metadata to {database_name}")
-            self.save_metadata(db_name=database_name,collection_name=specific_collection_name, metadata=metadata)
-
+            self.save_metadata(
+                db_name=database_name,
+                collection_name=specific_collection_name,
+                metadata=metadata,
+            )
         except Exception as e:
             logger.info(f"Error processing message: {e}")

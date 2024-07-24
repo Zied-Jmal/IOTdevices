@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from datetime import datetime, timedelta
 import logging
 from src.modules.database_modules.database import MongoDBClient
+from pymongo import DESCENDING
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -29,7 +30,7 @@ class Metadata(BaseModel):
 
 class DataPoint(BaseModel):
     timestamp: datetime
-    metadata: Dict[str, Any]
+    #metadata: Dict[str, Any]
     data: Dict[str, Any]
 
 
@@ -47,10 +48,10 @@ async def test_query(
 @app.get("/data", response_model=List[DataPoint])
 async def get_data(
     start: datetime = Query(
-        ..., description="Start datetime in ISO format (e.g., 2024-07-19T12:00:00Z)"
+        ..., description="Start datetime in ISO format (e.g., 2024-07-19T12:00:00)"
     ),
     end: datetime = Query(
-        ..., description="End datetime in ISO format (e.g., 2024-07-19T12:00:00Z)"
+        ..., description="End datetime in ISO format (e.g., 2024-07-19T12:00:00)"
     ),
     period: int = Query(None, description="Period in minutes to sum data"),
     database: str = Query(..., description="Name of the database"),
@@ -82,32 +83,34 @@ async def get_data(
         while current_start < end_rounded:
             current_end = current_start + timedelta(minutes=period)
             period_sum = {}
-            metadata = None
+            #metadata = None
             for item in data:
                 if current_start <= item["timestamp"] < current_end:
-                    if not metadata:
-                        metadata = item["metadata"]
+                    #if not metadata:
+                        #metadata = item["metadata"]
                     for key, value in item["data"].items():
                         if isinstance(value, (int, float)):
                             if key not in period_sum:
                                 period_sum[key] = 0
                             period_sum[key] += value
-            if metadata:
+            #if metadata:
+            #print(f"period_sum : {period_sum}")
+            if period_sum:
                 period_data.append(
                     DataPoint(
-                        timestamp=current_start, metadata=metadata, data=period_sum
+                        timestamp=current_start, data=period_sum
                     )
-                )
+                )#, metadata=metadata
             current_start = current_end
 
         return period_data
 
     return [
         DataPoint(
-            timestamp=item["timestamp"], metadata=item["metadata"], data=item["data"]
+            timestamp=item["timestamp"], data=item["data"]
         )
         for item in data
-    ]
+    ]#, metadata=item["metadata"]
 
 
 @app.get("/all_data", response_model=List[DataPoint])
@@ -119,10 +122,10 @@ async def get_all_data(
     data = list(coll.find())
     return [
         DataPoint(
-            timestamp=item["timestamp"], metadata=item["metadata"], data=item["data"]
+            timestamp=item["timestamp"], data=item["data"]
         )
         for item in data
-    ]
+    ]#, metadata=item["metadata"]
 
 
 @app.get("/last_data", response_model=DataPoint)
@@ -135,8 +138,8 @@ async def get_last_data(
     if not data:
         raise HTTPException(status_code=404, detail="No data found")
     return DataPoint(
-        timestamp=data["timestamp"], metadata=data["metadata"], data=data["data"]
-    )
+        timestamp=data["timestamp"], data=data["data"]
+    )#metadata=data["metadata"], 
 
 
 @app.get("/last_data_by_period", response_model=List[DataPoint])
@@ -167,15 +170,19 @@ async def get_last_data_by_period(
     for item in data:
         for key, value in item["data"].items():
             if isinstance(value, (int, float)):
+                
                 if key not in period_sum:
                     period_sum[key] = 0
                 period_sum[key] += value
+                #print(f"period_sum : {period_sum}")
+
+    #print(f"period_sum : {period_sum}")
 
     return [
         DataPoint(
-            timestamp=end_rounded, metadata=last_data_point["metadata"], data=period_sum
+            timestamp=end_rounded, data=period_sum
         )
-    ]
+    ]#, metadata=last_data_point["metadata"]
 
 
 @app.get("/databases", response_model=List[str])

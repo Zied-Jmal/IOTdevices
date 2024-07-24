@@ -1,5 +1,14 @@
 [
     {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
         "label": "os",
         "kind": 6,
         "isExtraImport": true,
@@ -186,6 +195,14 @@
         "documentation": {}
     },
     {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
         "label": "ManagerMQTT",
         "importPath": "src.managers.mqtt_manager.MQTTManager",
         "description": "src.managers.mqtt_manager.MQTTManager",
@@ -267,6 +284,38 @@
         "documentation": {}
     },
     {
+        "label": "DESCENDING",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "UpdateOne",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "ASCENDING",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
         "label": "threading",
         "kind": 6,
         "isExtraImport": true,
@@ -325,30 +374,6 @@
         "documentation": {}
     },
     {
-        "label": "MongoClient",
-        "importPath": "pymongo",
-        "description": "pymongo",
-        "isExtraImport": true,
-        "detail": "pymongo",
-        "documentation": {}
-    },
-    {
-        "label": "UpdateOne",
-        "importPath": "pymongo",
-        "description": "pymongo",
-        "isExtraImport": true,
-        "detail": "pymongo",
-        "documentation": {}
-    },
-    {
-        "label": "ASCENDING",
-        "importPath": "pymongo",
-        "description": "pymongo",
-        "isExtraImport": true,
-        "detail": "pymongo",
-        "documentation": {}
-    },
-    {
         "label": "CollectionInvalid",
         "importPath": "pymongo.errors",
         "description": "pymongo.errors",
@@ -363,15 +388,6 @@
         "importPath": "paho.mqtt.client",
         "description": "paho.mqtt.client",
         "detail": "paho.mqtt.client",
-        "documentation": {}
-    },
-    {
-        "label": "json",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "json",
-        "description": "json",
-        "detail": "json",
         "documentation": {}
     },
     {
@@ -477,7 +493,7 @@
         "kind": 6,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "class SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]\nclass SchemaUpdate(BaseModel):\n    database: Optional[str]",
+        "peekOfCode": "class SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    path_mapping: Dict[str, str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]\nclass SchemaUpdate(BaseModel):",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -504,7 +520,7 @@
         "kind": 2,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "def create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )\n    result = db[\"schemas\"].insert_one(schema.model_dump())\n    return {\"inserted_id\": str(result.inserted_id)}\n@app.get(\"/schemas/\", response_model=List[Dict[str, Any]])\ndef read_schemas():\n    schemas = list(db[\"schemas\"].find())",
+        "peekOfCode": "def create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )\n    result = db[\"schemas\"].insert_one(schema.model_dump())\n    print(\"222222\")\n    return {\"inserted_id\": str(result.inserted_id)}\n@app.get(\"/schemas/\", response_model=List[Dict[str, Any]])\ndef read_schemas():",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -531,7 +547,7 @@
         "kind": 2,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "def update_schema(database: str, schema_update: SchemaUpdate):\n    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}\n    if update_data:\n        result = db[\"schemas\"].update_one({\"database\": database}, {\"$set\": update_data})\n        if result.matched_count == 1:\n            return db[\"schemas\"].find_one({\"database\": database})\n    raise HTTPException(status_code=404, detail=\"Schema not found or no changes made\")\n@app.delete(\"/schemas/{database}\", response_model=Dict[str, Any])\ndef delete_schema(database: str):\n    result = db[\"schemas\"].delete_one({\"database\": database})",
+        "peekOfCode": "def update_schema(database: str, schema_update: SchemaUpdate):\n    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}\n    if update_data:\n        result = db[\"schemas\"].update_one({\"database\": database}, {\"$set\": update_data})\n        if result.matched_count == 1:\n            # Fetch the updated document\n            updated_schema = db[\"schemas\"].find_one({\"database\": database})\n            # Convert ObjectId to string\n            if updated_schema and \"_id\" in updated_schema:\n                updated_schema[\"_id\"] = str(updated_schema[\"_id\"])",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -567,7 +583,7 @@
         "kind": 5,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "client = manager.client\ndb = client[\"schemas_config\"]\n# Pydantic models\nclass SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str",
+        "peekOfCode": "client = manager.client\ndb = client[\"schemas_config\"]\n# Pydantic models\nclass SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    path_mapping: Dict[str, str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -576,7 +592,7 @@
         "kind": 5,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "db = client[\"schemas_config\"]\n# Pydantic models\nclass SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]",
+        "peekOfCode": "db = client[\"schemas_config\"]\n# Pydantic models\nclass SubSchema(BaseModel):\n    collection: str\n    devices: List[str]\n    topics: List[str]\n    path_mapping: Dict[str, str]\n    data_mapping: Dict[str, str]\nclass Schema(BaseModel):\n    database: str",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -585,7 +601,7 @@
         "kind": 6,
         "importPath": "src.api.extract_data_api",
         "description": "src.api.extract_data_api",
-        "peekOfCode": "class Metadata(BaseModel):\n    database: str\n    device_name: str\n    path: str\n    type: str\nclass DataPoint(BaseModel):\n    timestamp: datetime\n    metadata: Dict[str, Any]\n    data: Dict[str, Any]\n@app.get(\"/test_query\")",
+        "peekOfCode": "class Metadata(BaseModel):\n    database: str\n    device_name: str\n    path: str\n    type: str\nclass DataPoint(BaseModel):\n    timestamp: datetime\n    #metadata: Dict[str, Any]\n    data: Dict[str, Any]\n@app.get(\"/test_query\")",
         "detail": "src.api.extract_data_api",
         "documentation": {}
     },
@@ -594,7 +610,7 @@
         "kind": 6,
         "importPath": "src.api.extract_data_api",
         "description": "src.api.extract_data_api",
-        "peekOfCode": "class DataPoint(BaseModel):\n    timestamp: datetime\n    metadata: Dict[str, Any]\n    data: Dict[str, Any]\n@app.get(\"/test_query\")\nasync def test_query(\n    database: str = Query(..., description=\"Name of the database\"),\n    collection: str = Query(..., description=\"Name of the collection\"),\n):\n    coll = get_collection(database, collection)",
+        "peekOfCode": "class DataPoint(BaseModel):\n    timestamp: datetime\n    #metadata: Dict[str, Any]\n    data: Dict[str, Any]\n@app.get(\"/test_query\")\nasync def test_query(\n    database: str = Query(..., description=\"Name of the database\"),\n    collection: str = Query(..., description=\"Name of the collection\"),\n):\n    coll = get_collection(database, collection)",
         "detail": "src.api.extract_data_api",
         "documentation": {}
     },
@@ -648,7 +664,7 @@
         "kind": 6,
         "importPath": "src.modules.database_modules.database",
         "description": "src.modules.database_modules.database",
-        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            mongo_url = os.getenv(\"MONGO_URL\", \"mongodb://localhost:27017/\")\n            MongoDBClient._client = MongoClient(mongo_url)\n        return MongoDBClient._client\n    @staticmethod\n    def get_template(collection_name):",
+        "peekOfCode": "class MongoDBClient:\n    _client = None\n    @staticmethod\n    def get_client():\n        if MongoDBClient._client is None:\n            mongo_url = os.getenv(\"MONGO_URL\", \"mongodb://localhost:27018/\")\n            MongoDBClient._client = MongoClient(mongo_url)\n        return MongoDBClient._client\n    @staticmethod\n    def get_template(collection_name):",
         "detail": "src.modules.database_modules.database",
         "documentation": {}
     },
