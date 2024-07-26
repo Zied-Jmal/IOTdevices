@@ -8,7 +8,7 @@ import queue
 import paho.mqtt.client as mqtt
 import logging
 import ssl
-from src.modules.mqtt_modules.config_mqtt import ConfigMQTT
+#from src.modules.mqtt_modules.config_mqtt import ConfigMQTT
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -32,6 +32,8 @@ class MQTTService:
         self.client.user_data_set([])
         self.messages = []
         self.message_queue = message_queue
+        self.periodic_thread = None
+        self.periodic_thread_stop_event = threading.Event()
 
     def on_subscribe(self, client, userdata, mid, reason_code_list, properties):
         for reason_code in reason_code_list:
@@ -49,11 +51,11 @@ class MQTTService:
 
     def on_message(self, client, userdata, message):
         self.messages.append(message.payload)
-        #print(f">for this topic : {message.topic} ")
-        #print(f"-->Received the following message: {message.payload.decode()}")
-        self.message_queue.put((message.topic, message.payload.decode()))
         # print(f">for this topic : {message.topic} ")
         # print(f"-->Received the following message: {message.payload.decode()}")
+        self.message_queue.put((message.topic, message.payload.decode()))
+        print(f">for this topic : {message.topic} ")
+        print(f"-->Received the following message: {message.payload.decode()}")
         if len(self.messages) > 1000:
             self.messages = []
             print("Clearing messages list")
@@ -93,9 +95,13 @@ class MQTTService:
                 tls_version=ssl.PROTOCOL_TLS,
                 ciphers=None,
             )
-
         if self.ConfigMQTT.get_nested_value("settings", "tls_insecure"):
             self.client.tls_insecure_set
+            if not self.ConfigMQTT.get_nested_value("settings", "ssl"):
+                try :
+                    self.client.tls_set(cert_reqs=ssl.CERT_NONE)
+                except Exception as e:
+                    print(f"No SSL: {e}")
         # Connect to the broker
         # try:
         #    self.client.disconnect()
@@ -115,8 +121,40 @@ class MQTTService:
     def establish_connection_and_start(self):
         self.establish_connection()
         self.start()
+        if self.ConfigMQTT.get_value("periodic_message").get("active", False):
+            self.start_periodic_messages()
 
     def stop(self):
         logging.info("Stopping MQTT client loop and disconnecting...")
         self.client.loop_stop()
         self.client.disconnect()
+
+    def start_periodic_messages(self):
+        if self.periodic_thread and self.periodic_thread.is_alive():
+            logging.warning("Periodic messages thread is already running.")
+            return
+
+        def periodic_task():
+            while not self.periodic_thread_stop_event.is_set():
+                try:
+                    logging.info("Sending periodic message...")
+                    topic = self.ConfigMQTT.get_value("periodic_message").get("topic")
+                    message = self.ConfigMQTT.get_value("periodic_message").get("message")
+                    period = self.ConfigMQTT.get_value("periodic_message").get("period")
+                    self.client.publish(topic, message)
+                    self.periodic_thread_stop_event.wait(period)  # Using wait to avoid busy-waiting
+                except Exception as e:
+                    logging.error(f"Error in periodic task: {e}")
+        
+        self.periodic_thread_stop_event.clear()
+        self.periodic_thread = threading.Thread(target=periodic_task)
+        self.periodic_thread.start()
+
+    def stop_periodic_messages(self):
+        if self.periodic_thread and self.periodic_thread.is_alive():
+            self.periodic_thread_stop_event.set()
+            self.periodic_thread.join()
+            self.periodic_thread = None
+            logging.info("Periodic messages thread stopped.")
+        else:
+            logging.info("No periodic message thread running.")

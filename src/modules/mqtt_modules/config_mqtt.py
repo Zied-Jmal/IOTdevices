@@ -28,16 +28,24 @@ class ConfigMQTT:
                 "keep_alive": 60,
                 "qos": 0,  # Quality of Service (0: At most once, 1: At least once, 2: Exactly once)
                 "retain": False,
-                "username": None,
-                "password": None,
+                "username": "",
+                "password": "",
                 "ssl": False,  # Flag to enable SSL/TLS
-                "ca_certs": None,  # Path to CA certificates file
-                "certfile": None,  # Path to client certificate file
-                "keyfile": None,  # Path to client private key file
+                "ca_certs": "",  # Path to CA certificates file
+                "certfile": "",  # Path to client certificate file
+                "keyfile": "",  # Path to client private key file
                 "insecure": False,  # Flag to allow insecure SSL/TLS connection
                 "auth": False,  # Flag to enable authentication
             },
+            "autostart": False,  # New key to determine if instance should autostart
+            "periodic_message": {  # New section for periodic message configuration
+                "period": 0,  # Time period in seconds
+                "topic": "",  # Topic to send the message to
+                "message": "",  # Message to be sent
+                "active": False,  # Status to determine if periodic message sending is active
+            },
         }
+
         return template
 
     def reload(self):
@@ -47,7 +55,9 @@ class ConfigMQTT:
     def get_value(self, key):
         self.reload()
         return self.config_data.get(key)
-
+    def get_all_values(self):
+        self.reload()
+        return self.config_data
     def insert_value(self, key, value):
         self.reload()
         if isinstance(self.config_data.get(key), list):

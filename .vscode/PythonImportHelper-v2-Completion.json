@@ -90,6 +90,38 @@
         "documentation": {}
     },
     {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "File",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "UploadFile",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
         "label": "shutil",
         "kind": 6,
         "isExtraImport": true,
@@ -342,14 +374,6 @@
         "documentation": {}
     },
     {
-        "label": "ConfigMQTT",
-        "importPath": "src.modules.mqtt_modules.config_mqtt",
-        "description": "src.modules.mqtt_modules.config_mqtt",
-        "isExtraImport": true,
-        "detail": "src.modules.mqtt_modules.config_mqtt",
-        "documentation": {}
-    },
-    {
         "label": "DataWriter",
         "importPath": "src.services.database_services.writer_database",
         "description": "src.services.database_services.writer_database",
@@ -475,7 +499,7 @@
         "kind": 6,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "class NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str\nclass QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\n#! Red (!)\n# ? Blue (?)",
+        "peekOfCode": "class NestedConfigRequest(BaseModel):\n    section: str\n    key: str\n    value: str\nclass QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\nclass AutostartRequest(BaseModel):\n    autostart: bool",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -484,7 +508,16 @@
         "kind": 6,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "class QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\n#! Red (!)\n# ? Blue (?)\n# * Green (*)\n# ^ Yellow (^)\n# & Pink (&)\n# ~ Purple (~)",
+        "peekOfCode": "class QosEnum(int, Enum):\n    low = 0\n    medium = 1\n    high = 2\nclass AutostartRequest(BaseModel):\n    autostart: bool\n#! Red (!)\n# ? Blue (?)\n# * Green (*)\n# ^ Yellow (^)",
+        "detail": "src.api.config_api",
+        "documentation": {}
+    },
+    {
+        "label": "AutostartRequest",
+        "kind": 6,
+        "importPath": "src.api.config_api",
+        "description": "src.api.config_api",
+        "peekOfCode": "class AutostartRequest(BaseModel):\n    autostart: bool\n#! Red (!)\n# ? Blue (?)\n# * Green (*)\n# ^ Yellow (^)\n# & Pink (&)\n# ~ Purple (~)\n# todo Mustard (todo)\n# // Grey (//)",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -502,7 +535,7 @@
         "kind": 6,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "class Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]\nclass SchemaUpdate(BaseModel):\n    database: Optional[str]\n    sub_schemas: Optional[List[SubSchema]]\n# CRUD operations\n@app.post(\"/schemas/\", response_model=Dict[str, Any])\ndef create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):",
+        "peekOfCode": "class Schema(BaseModel):\n    database: str\n    sub_schemas: List[SubSchema]\nclass SchemaUpdate(BaseModel):\n    database: Optional[str]\n    sub_schemas: Optional[List[SubSchema]]\n# CRUD operations\n@app.post(\"/schemas/\", response_model=Dict[str, Any],tags=[\"Schemas\"])\ndef create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -511,7 +544,7 @@
         "kind": 6,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "class SchemaUpdate(BaseModel):\n    database: Optional[str]\n    sub_schemas: Optional[List[SubSchema]]\n# CRUD operations\n@app.post(\"/schemas/\", response_model=Dict[str, Any])\ndef create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )",
+        "peekOfCode": "class SchemaUpdate(BaseModel):\n    database: Optional[str]\n    sub_schemas: Optional[List[SubSchema]]\n# CRUD operations\n@app.post(\"/schemas/\", response_model=Dict[str, Any],tags=[\"Schemas\"])\ndef create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -520,7 +553,7 @@
         "kind": 2,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "def create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )\n    result = db[\"schemas\"].insert_one(schema.model_dump())\n    print(\"222222\")\n    return {\"inserted_id\": str(result.inserted_id)}\n@app.get(\"/schemas/\", response_model=List[Dict[str, Any]])\ndef read_schemas():",
+        "peekOfCode": "def create_schema(schema: Schema):\n    if db[\"schemas\"].find_one({\"database\": schema.database}):\n        raise HTTPException(\n            status_code=400, detail=\"Schema with this database already exists\"\n        )\n    result = db[\"schemas\"].insert_one(schema.model_dump())\n    print(\"222222\")\n    return {\"inserted_id\": str(result.inserted_id)}\n@app.get(\"/schemas/\", response_model=List[Dict[str, Any]],tags=[\"Schemas\"])\ndef read_schemas():",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -529,7 +562,7 @@
         "kind": 2,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "def read_schemas():\n    schemas = list(db[\"schemas\"].find())\n    for schema in schemas:\n        schema[\"_id\"] = str(schema[\"_id\"])\n    return schemas\n@app.get(\"/schemas/{database}\", response_model=Dict[str, Any])\ndef read_schema(database: str):\n    schema = db[\"schemas\"].find_one({\"database\": database})\n    if schema:\n        schema[\"_id\"] = str(schema[\"_id\"])",
+        "peekOfCode": "def read_schemas():\n    schemas = list(db[\"schemas\"].find())\n    for schema in schemas:\n        schema[\"_id\"] = str(schema[\"_id\"])\n    return schemas\n@app.get(\"/schemas/{database}\", response_model=Dict[str, Any],tags=[\"Schemas\"])\ndef read_schema(database: str):\n    schema = db[\"schemas\"].find_one({\"database\": database})\n    if schema:\n        schema[\"_id\"] = str(schema[\"_id\"])",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -538,7 +571,7 @@
         "kind": 2,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "def read_schema(database: str):\n    schema = db[\"schemas\"].find_one({\"database\": database})\n    if schema:\n        schema[\"_id\"] = str(schema[\"_id\"])\n        return schema\n    raise HTTPException(status_code=404, detail=\"Schema not found\")\n@app.put(\"/schemas/{database}\", response_model=Dict[str, Any])\ndef update_schema(database: str, schema_update: SchemaUpdate):\n    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}\n    if update_data:",
+        "peekOfCode": "def read_schema(database: str):\n    schema = db[\"schemas\"].find_one({\"database\": database})\n    if schema:\n        schema[\"_id\"] = str(schema[\"_id\"])\n        return schema\n    raise HTTPException(status_code=404, detail=\"Schema not found\")\n@app.put(\"/schemas/{database}\", response_model=Dict[str, Any],tags=[\"Schemas\"])\ndef update_schema(database: str, schema_update: SchemaUpdate):\n    update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}\n    if update_data:",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -556,7 +589,7 @@
         "kind": 2,
         "importPath": "src.api.config_api",
         "description": "src.api.config_api",
-        "peekOfCode": "def delete_schema(database: str):\n    result = db[\"schemas\"].delete_one({\"database\": database})\n    if result.deleted_count == 1:\n        return {\"deleted_database\": database}\n    raise HTTPException(status_code=404, detail=\"Schema not found\")",
+        "peekOfCode": "def delete_schema(database: str):\n    result = db[\"schemas\"].delete_one({\"database\": database})\n    if result.deleted_count == 1:\n        return {\"deleted_database\": database}\n    raise HTTPException(status_code=404, detail=\"Schema not found\")\n# Endpoint to add a topic to an instance\n@app.post(\"/instances/{instance_name}/topics\", tags=[\"MQTT Topics\"])\nasync def add_topic(instance_name: str, topic: str):\n    try:\n        response = manager.add_topic(instance_name, topic)",
         "detail": "src.api.config_api",
         "documentation": {}
     },
@@ -691,7 +724,7 @@
         "kind": 6,
         "importPath": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "description": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
-        "peekOfCode": "class DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(\n        self, db_name, collection_name, time_field, meta_field, granularity=\"seconds\"",
+        "peekOfCode": "class DataWriterService:\n    def __init__(self):\n        self.client = MongoDBClient.get_client()\n        # Load schemas from MongoDB\n        self.schemas_cursor = self.client[\"schemas_config\"][\"schemas\"].find()\n        self.schemas = list(\n            self.schemas_cursor\n        )  # Convert cursor to list for easier access\n    def create_time_series_collection(\n        self, db_name, collection_name, time_field, granularity=\"seconds\"",
         "detail": "src.services.database_services.mongo_service_with_many_data_schemas_and_specifics_topics",
         "documentation": {}
     },

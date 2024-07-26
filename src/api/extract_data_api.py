@@ -199,3 +199,161 @@ async def list_collections(
         raise HTTPException(status_code=404, detail="Database not found")
     collections = client[database].list_collection_names()
     return collections
+
+@app.get("/average_data", response_model=List[DataPoint])
+async def get_average_data(
+    start: datetime = Query(
+        ..., description="Start datetime in ISO format (e.g., 2024-07-19T12:00:00)"
+    ),
+    end: datetime = Query(
+        ..., description="End datetime in ISO format (e.g., 2024-07-19T12:00:00)"
+    ),
+    period: int = Query(..., description="Period in minutes to average data"),
+    database: str = Query(..., description="Name of the database"),
+    collection: str = Query(..., description="Name of the collection"),
+):
+    if start >= end:
+        raise HTTPException(
+            status_code=400, detail="Start datetime must be before end datetime"
+        )
+
+    if period <= 0:
+        raise HTTPException(
+            status_code=400, detail="Period must be a positive integer"
+        )
+
+    coll = get_collection(database, collection)
+    query = {"timestamp": {"$gte": start, "$lt": end}}
+    data = list(coll.find(query))
+
+    if not data:
+        logger.info("No data found for the given interval.")
+        return []
+
+    start_rounded = start.replace(
+        minute=(start.minute // period) * period, second=0, microsecond=0
+    )
+    end_rounded = end.replace(
+        minute=(end.minute // period) * period, second=0, microsecond=0
+    ) + timedelta(minutes=period)
+    
+    period_data = []
+    current_start = start_rounded
+
+    while current_start < end_rounded:
+        current_end = current_start + timedelta(minutes=period)
+        period_sum = {}
+        count = 0
+
+        for item in data:
+            if current_start <= item["timestamp"] < current_end:
+                for key, value in item["data"].items():
+                    if isinstance(value, (int, float)):
+                        if key not in period_sum:
+                            period_sum[key] = 0
+                        period_sum[key] += value
+                count += 1
+
+        if count > 0:
+            period_avg = {key: value / count for key, value in period_sum.items()}
+            period_data.append(
+                DataPoint(
+                    timestamp=current_start, data=period_avg
+                )
+            )
+        
+        current_start = current_end
+
+    return period_data
+
+@app.get("/last_average_data_by_period", response_model=DataPoint)
+async def get_last_average_data_by_period(
+    period: int = Query(
+        ..., description="Period in minutes to average data, must be a positive integer"
+    ),
+    database: str = Query(..., description="Name of the database"),
+    collection: str = Query(..., description="Name of the collection"),
+):
+    if period <= 0:
+        raise HTTPException(status_code=400, detail="Period must be a positive integer")
+
+    coll = get_collection(database, collection)
+    last_data_point = coll.find_one({}, sort=[("timestamp", DESCENDING)])
+    if not last_data_point:
+        raise HTTPException(status_code=404, detail="No data found")
+
+    end = last_data_point["timestamp"]
+    end_rounded = end.replace(
+        minute=(end.minute // period) * period, second=0, microsecond=0
+    )
+    start_rounded = end_rounded - timedelta(minutes=period)
+
+    data = list(coll.find({"timestamp": {"$gte": start_rounded, "$lt": end_rounded}}))
+
+    period_sum = {}
+    count = 0
+    for item in data:
+        for key, value in item["data"].items():
+            if isinstance(value, (int, float)):
+                if key not in period_sum:
+                    period_sum[key] = 0
+                period_sum[key] += value
+        count += 1
+
+    if count > 0:
+        print(f"period_sum : {period_sum}")
+        print(f"count : {count}")
+        period_avg = {key: value / count for key, value in period_sum.items()}
+        print(f"period_avg : {period_avg}")
+
+        return DataPoint(
+            timestamp=end_rounded, data=period_avg
+        )
+    else:
+        raise HTTPException(status_code=404, detail="No data found in the last period")
+@app.get("/last_average_data_by_period2", response_model=DataPoint)
+async def get_last_average_data_by_period2(
+    period: int = Query(
+        ..., description="Period in minutes to average data, must be a positive integer"
+    ),
+    database: str = Query(..., description="Name of the database"),
+    collection: str = Query(..., description="Name of the collection"),
+):
+    if period <= 0:
+        raise HTTPException(status_code=400, detail="Period must be a positive integer")
+
+    coll = get_collection(database, collection)
+    last_data_point = coll.find_one({}, sort=[("timestamp", DESCENDING)])
+    if not last_data_point:
+        raise HTTPException(status_code=404, detail="No data found")
+
+    end = last_data_point["timestamp"]
+    end_rounded = end.replace(
+        minute=(end.minute // period) * period, second=0, microsecond=0
+    )
+    start_rounded = end_rounded - timedelta(minutes=period)
+
+    data = list(coll.find({"timestamp": {"$gte": start_rounded, "$lt": end_rounded}}))
+
+    period_sum = {}
+    period_count = {}
+
+    for item in data:
+        for key, value in item["data"].items():
+            if isinstance(value, (int, float)):
+                if key not in period_sum:
+                    period_sum[key] = 0
+                    period_count[key] = 0
+                period_sum[key] += value
+                period_count[key] += 1
+
+    period_avg = {
+        key: period_sum[key] / period_count[key] for key in period_sum if period_count[key] > 0
+    }
+
+    if period_avg:
+        return DataPoint(
+            timestamp=end_rounded, data=period_avg
+        )
+    else:
+        raise HTTPException(status_code=404, detail="No data found in the last period")

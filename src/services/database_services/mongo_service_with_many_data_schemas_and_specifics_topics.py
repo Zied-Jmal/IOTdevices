@@ -25,8 +25,8 @@ class DataWriterService:
         )  # Convert cursor to list for easier access
 
     def create_time_series_collection(
-        self, db_name, collection_name, time_field, meta_field, granularity="seconds"
-    ):
+        self, db_name, collection_name, time_field, granularity="seconds"
+    ):  # , meta_field
         db = self.client[db_name]
 
         # Check if the collection already exists
@@ -37,17 +37,23 @@ class DataWriterService:
             return
 
         try:
-            db.create_collection(
-                collection_name,
-                timeseries={
-                    "timeField": time_field,
-                    "metaField": meta_field,
-                    "granularity": granularity,
-                },
-            )
-            logger.info(
-                f"Created time-series collection '{collection_name}' in database '{db_name}'."
-            )
+            if (
+                collection_name
+                and collection_name != ""
+                and collection_name is not None
+                and collection_name != "None"
+            ):
+                db.create_collection(
+                    collection_name,
+                    timeseries={
+                        "timeField": time_field,
+                        # "metaField": meta_field,
+                        "granularity": granularity,
+                    },
+                )
+                logger.info(
+                    f"Created time-series collection '{collection_name}' in database '{db_name}'."
+                )
         except Exception as e:
             logger.info(
                 f"Failed to create collection '{collection_name}' in database '{db_name}': {e}"
@@ -270,18 +276,20 @@ class DataWriterService:
                     if mqtt.topic_matches_sub(topic_pattern, topic):
                         print(f"topic_pattern : {topic_pattern}")
                         print(f"raw_data : {raw_data}")
-                        transformed_data[key] = raw_data
+                        transformed_data[key] = self.evaluate_expression(
+                        raw_data, path_expr
+                    )
                         print(f"transformed_data[{key}] : {transformed_data[key]}")
 
-                    #topic_pattern2 = "shellies/+/emeter/+/hourly-energy"
+                    # topic_pattern2 = "shellies/+/emeter/+/hourly-energy"
                     self.create_time_series_collection(
-                            database_name,
-                            specific_collection_name,
-                            "timestamp",
-                            # "metadata",
-                        )
-                    #if mqtt.topic_matches_sub(topic_pattern2, topic):
-                        #print(f"raw_data_topic_pattern2 : {raw_data}")
+                        database_name,
+                        specific_collection_name,
+                        "timestamp",
+                        # "metadata",
+                    )
+                    # if mqtt.topic_matches_sub(topic_pattern2, topic):
+                    # print(f"raw_data_topic_pattern2 : {raw_data}")
 
                 elif "subpath" in path_mapping:
                     path_name = self.evaluate_expression(
@@ -309,8 +317,8 @@ class DataWriterService:
                 specific_collection_name = f"{device_name}"
                 logger.info("specific_collection_name:", specific_collection_name)
                 self.create_time_series_collection(
-                    database_name, specific_collection_name, "timestamp", "metadata"
-                )
+                    database_name, specific_collection_name, "timestamp"
+                )  # , "metadata"
             logger.info("specific_collection_name")
             metadata = {
                 "database": database_name,
@@ -326,16 +334,24 @@ class DataWriterService:
             }
             logger.info(f"Metadata: {metadata}")
             logger.info(f"Document to insert: {document}")
-            self.client[database_name][specific_collection_name].insert_one(document)
-            logger.info(
-                f"Inserted document into {database_name}/{specific_collection_name}: {document}"
-            )
-            # Save metadata to the metadata database
-            logger.info(f"Saving metadata to {database_name}")
-            self.save_metadata(
-                db_name=database_name,
-                collection_name=specific_collection_name,
-                metadata=metadata,
-            )
+            if (
+                specific_collection_name
+                and specific_collection_name != ""
+                and specific_collection_name is not None
+                and specific_collection_name != "None"
+            ):
+                self.client[database_name][specific_collection_name].insert_one(
+                    document
+                )
+                logger.info(
+                    f"Inserted document into {database_name}/{specific_collection_name}: {document}"
+                )
+                # Save metadata to the metadata database
+                logger.info(f"Saving metadata to {database_name}")
+                self.save_metadata(
+                    db_name=database_name,
+                    collection_name=specific_collection_name,
+                    metadata=metadata,
+                )
         except Exception as e:
             logger.info(f"Error processing message: {e}")

@@ -9,6 +9,7 @@ import queue
 from typing import Literal
 from enum import Enum
 import logging
+from fastapi import FastAPI, HTTPException, File, UploadFile
 
 
 # * CUSTOM IMPORTS
@@ -49,28 +50,34 @@ class ManagerMQTT:
             True  # Ensure this thread exits when the main program exits
         )
         self.saving_thread.start()
+        self.periodic_threads = {}  # Track periodic threads for each instance
 
     def load_existing_instances(self):
         collections = self.config_db.list_collection_names()
         for collection in collections:
-            self.create_instance(collection)
-            #print("collection: ", collection)
+            autostart = self.config_db[collection].find_one()["autostart"]
+            self.create_instance(collection, autostart=autostart)
+            # print("collection: ", collection)
 
     def save_messages(self):
         while True:
             topic, message = self.message_queue.get()
-            #print(f"Queue received topic: {topic}, message: {message}")
+            # print(f"Queue received topic: {topic}, message: {message}")
             self.data_writer.write_data(topic, message)
             self.message_queue.task_done()
 
-    def create_instance(self, instance_name):
+    def create_instance(self, instance_name, autostart=False):
         if instance_name in self.instances:
             raise Exception(f"Instance {instance_name} already exists")
 
         config_mqtt = ConfigMQTT(self.config_db, instance_name)
         mqtt_instance = MQTTService(config_mqtt, message_queue=self.message_queue)
         self.instances[instance_name] = mqtt_instance
-
+        if autostart:
+            self.start_instance(instance_name)
+            if config_mqtt.get_value("periodic_message").get("active"):
+                mqtt_instance.start_periodic_messages()
+                self.periodic_threads[instance_name] = mqtt_instance.periodic_thread
     def delete_instance(self, instance_name):
         if instance_name not in self.instances:
             raise Exception(f"Instance {instance_name} does not exist")
@@ -93,6 +100,7 @@ class ManagerMQTT:
             raise Exception(f"Instance {instance_name} does not exist")
         instance = self.instances[instance_name]
         if instance.running:
+            instance.stop_periodic_messages()  # Stop periodic messages before stopping instance
             instance.client.disconnect()
             instance.client.loop_stop()
             instance.thread.join()
@@ -160,8 +168,58 @@ class ManagerMQTT:
             self.set_nested_config_value_using_jsonTree_HTTP(
                 instance, jsonTree, value=value
             )
+            jsonTreeFormatter = lambda jsonTree: ".".join(map(str, jsonTree))
+                      # Restart periodic messages if the configuration changes
+            if jsonTree == ["periodic_message", "active"]:
+                if value:
+                    instance.start_periodic_messages()
+                else:
+                    instance.stop_periodic_messages()
             return {
-                "message": f"Nested config {jsonTree[0]}.{jsonTree[1]} set to {value} for instance {instance_name}"
+                "message": f"Nested config {jsonTreeFormatter} set to {value} for instance {instance_name}"
             }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+        
+    def add_topic(self, instance_name: str, topic: str):
+        if instance_name not in self.instances:
+            raise Exception(f"Instance {instance_name} does not exist")
+        
+        instance = self.instances[instance_name]
+        topics = instance.ConfigMQTT.get_value("topics")
+        if topic not in topics:
+            topics.append(topic)
+            instance.ConfigMQTT.update_value("topics", topics)
+            instance.client.subscribe(topic)
+            return {"message": f"Topic {topic} added to instance {instance_name}"}
+        else:
+            raise Exception(f"Topic {topic} already exists in instance {instance_name}")
+
+    def delete_topic(self, instance_name: str, topic: str):
+        if instance_name not in self.instances:
+            raise Exception(f"Instance {instance_name} does not exist")
+
+        instance = self.instances[instance_name]
+        topics = instance.ConfigMQTT.get_value("topics")
+        if topic in topics:
+            topics.remove(topic)
+            instance.ConfigMQTT.update_value("topics", topics)
+            instance.client.unsubscribe(topic)
+            return {"message": f"Topic {topic} removed from instance {instance_name}"}
+        else:
+            raise Exception(f"Topic {topic} does not exist in instance {instance_name}")
+
+    def list_topics(self, instance_name: str):
+        if instance_name not in self.instances:
+            raise Exception(f"Instance {instance_name} does not exist")
+        
+        instance = self.instances[instance_name]
+        topics = instance.ConfigMQTT.get_value("topics")
+        return {"instance_name": instance_name, "topics": topics}
+    
+    def get_all_config_data(self, instance):
+        try:
+            config_mqtt = instance.ConfigMQTT.get_all_values()
+            return config_mqtt  # This should return the full configuration
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

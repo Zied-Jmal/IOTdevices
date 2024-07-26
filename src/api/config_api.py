@@ -42,7 +42,9 @@ class QosEnum(int, Enum):
     medium = 1
     high = 2
 
-
+class AutostartRequest(BaseModel):
+    autostart: bool
+    
 #! Red (!)
 # ? Blue (?)
 # * Green (*)
@@ -71,6 +73,79 @@ async def get_config1(instance_name: str, key: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/config/{instance_name}/{path_key}", tags=["get configuration generic"])
+async def get_config(
+    instance_name: str,
+    path_key: str,
+    sub_key: str = Query(None, description="Optional sub-key for nested configurations")
+):
+    """
+    Get configuration value for a given instance and path key.
+    
+    - `instance_name`: Name of the instance.
+    - `path_key`: The primary key for the configuration.
+    - `sub_key`: Optional nested key for more specific configurations.
+    """
+    print("get config")
+    jsonTree = [path_key]
+    if sub_key:
+        jsonTree.append(sub_key)
+
+    try:
+        instance = manager.get_instance(instance_name)
+        if not instance:
+            raise HTTPException(
+                status_code=404, detail=f"Instance {instance_name} not found"
+            )
+        value = manager.get_nested_config_value_using_jsonTree_HTTP(instance, jsonTree)
+
+        response_data = {"instance_name": instance_name, "path_key": path_key, "sub_key": sub_key, "value": value}
+        return response_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+@app.get("/config3/{instance_name}", tags=["get configuration generic"])
+async def get_config3(
+    instance_name: str,
+    path_key: Optional[str] = None,
+    sub_key: Optional[str] = Query(None, description="Optional sub-key for nested configurations")
+):
+    """
+    Get configuration value for a given instance and path key.
+    
+    - `instance_name`: Name of the instance.
+    - `path_key`: The primary key for the configuration (optional).
+    - `sub_key`: Optional nested key for more specific configurations.
+    
+    If `path_key` is not provided, returns all configuration data for the instance.
+    """
+    print("get config")
+    jsonTree = []
+    if path_key:
+        jsonTree.append(path_key)
+        if sub_key:
+            jsonTree.append(sub_key)
+
+    try:
+        instance = manager.get_instance(instance_name)
+        if not instance:
+            raise HTTPException(
+                status_code=404, detail=f"Instance {instance_name} not found"
+            )
+        
+        if jsonTree:
+            value = manager.get_nested_config_value_using_jsonTree_HTTP(instance, jsonTree)
+        else:
+            # Retrieve all configuration data if no path_key is provided
+            value = manager.get_all_config_data(instance)
+            value["_id"] = str(value["_id"])
+        response_data = {"instance_name": instance_name, "path_key": path_key, "sub_key": sub_key, "value": value}
+        return response_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 # &------------------------------------------------------------------------------
 # &FastAPI Routes :GET
 # &------------------------------------------------------------------------------
@@ -105,6 +180,11 @@ async def delete_instance(instance_name: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/instances/autostart/{instance_name}", tags=["MQTT instance"])
+async def set_instance_autostart(instance_name: str, value:bool):
+    jsonTree = ["autostart"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
 @app.post("/instances/start/{instance_name}", tags=["MQTT instance"])
 async def start_instance(instance_name: str):
     try:
@@ -131,46 +211,9 @@ async def list_instances():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.post("/instances/{instance_name}/config")
-async def set_instance_config(instance_name: str, request: ConfigRequest):
-    try:
-        instance = manager.get_instance(instance_name)
-        if not instance:
-            raise HTTPException(
-                status_code=404, detail=f"Instance {instance_name} not found"
-            )
-        instance.config_mqtt.insert_value(request.key, request.value)
-        return {
-            "message": f"Config {request.key} set to {request.value} for instance {instance_name}"
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/instances/{instance_name}/config/nested")
-async def set_instance_nested_config(instance_name: str, request: NestedConfigRequest):
-    try:
-        instance = manager.get_instance(instance_name)
-        if not instance:
-            raise HTTPException(
-                status_code=404, detail=f"Instance {instance_name} not found"
-            )
-        instance.config_mqtt.insert_nested_value(
-            request.section, request.key, value=request.value
-        )
-        return {
-            "message": f"Nested config {request.section}.{request.key} set to {request.value} for instance {instance_name}"
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
 # ------------------------------------------------------------------------------
 # POST: update instance configuration
 # ------------------------------------------------------------------------------
-
-
 @app.post(
     "/instances/{instance_name}/config/keep_alive",
     tags=["update instance configuration"],
@@ -179,6 +222,37 @@ async def set_instance_keep_alive_config(
     instance_name: str, value: int = Query(description="keep_alive", alias="keep_alive")
 ):
     jsonTree = ["settings", "keep_alive"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+@app.post(
+    "/instances/{instance_name}/config/broker_address",
+    tags=["update instance configuration"],
+)
+async def set_instance_broker_address_config(
+    instance_name: str, value: str = Query(description="broker_address", alias="broker_address")
+):
+    jsonTree = ["broker_address"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+@app.post(
+    "/instances/{instance_name}/config/port",
+    tags=["update instance configuration"],
+)
+async def set_instance_port_config(
+    instance_name: str, value: int = Query(description="port", alias="port")
+):
+    jsonTree = ["port"]
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
+
+
+@app.post(
+    "/instances/{instance_name}/config/client_id",
+    tags=["update instance configuration"],
+)
+async def set_instance_client_id_config(
+    instance_name: str, value: int = Query(description="client_id", alias="client_id")
+):
+    jsonTree = ["client_id"]
     return manager.update_instance_configuration(instance_name, jsonTree, value=value)
 
 
@@ -331,7 +405,7 @@ class SchemaUpdate(BaseModel):
 
 
 # CRUD operations
-@app.post("/schemas/", response_model=Dict[str, Any])
+@app.post("/schemas/", response_model=Dict[str, Any],tags=["Schemas"])
 def create_schema(schema: Schema):
     if db["schemas"].find_one({"database": schema.database}):
         raise HTTPException(
@@ -342,7 +416,7 @@ def create_schema(schema: Schema):
     return {"inserted_id": str(result.inserted_id)}
 
 
-@app.get("/schemas/", response_model=List[Dict[str, Any]])
+@app.get("/schemas/", response_model=List[Dict[str, Any]],tags=["Schemas"])
 def read_schemas():
     schemas = list(db["schemas"].find())
     for schema in schemas:
@@ -350,7 +424,7 @@ def read_schemas():
     return schemas
 
 
-@app.get("/schemas/{database}", response_model=Dict[str, Any])
+@app.get("/schemas/{database}", response_model=Dict[str, Any],tags=["Schemas"])
 def read_schema(database: str):
     schema = db["schemas"].find_one({"database": database})
     if schema:
@@ -359,7 +433,7 @@ def read_schema(database: str):
     raise HTTPException(status_code=404, detail="Schema not found")
 
 
-@app.put("/schemas/{database}", response_model=Dict[str, Any])
+@app.put("/schemas/{database}", response_model=Dict[str, Any],tags=["Schemas"])
 def update_schema(database: str, schema_update: SchemaUpdate):
     update_data = {k: v for k, v in schema_update.model_dump().items() if v is not None}
 
@@ -379,9 +453,57 @@ def update_schema(database: str, schema_update: SchemaUpdate):
     raise HTTPException(status_code=404, detail="Schema not found or no changes made")
 
 
-@app.delete("/schemas/{database}", response_model=Dict[str, Any])
+@app.delete("/schemas/{database}", response_model=Dict[str, Any],tags=["Schemas"])
 def delete_schema(database: str):
     result = db["schemas"].delete_one({"database": database})
     if result.deleted_count == 1:
         return {"deleted_database": database}
     raise HTTPException(status_code=404, detail="Schema not found")
+
+
+
+
+
+# Endpoint to add a topic to an instance
+@app.post("/instances/{instance_name}/topics", tags=["MQTT Topics"])
+async def add_topic(instance_name: str, topic: str):
+    try:
+        response = manager.add_topic(instance_name, topic)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Endpoint to delete a topic from an instance
+@app.delete("/instances/{instance_name}/topics", tags=["MQTT Topics"])
+async def delete_topic(instance_name: str, topic: str):
+    try:
+        response = manager.delete_topic(instance_name, topic)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Endpoint to list topics of an instance
+@app.get("/instances/{instance_name}/topics", tags=["MQTT Topics"])
+async def list_topics(instance_name: str):
+    try:
+        response = manager.list_topics(instance_name)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/instances/{instance_name}/config/periodic_message", tags=["update instance configuration"])
+async def set_periodic_message_config(
+    instance_name: str,
+    period: int = Query(description="Time period in seconds"),
+    topic: str = Query(description="Topic for periodic message"),
+    message: str = Query(description="Message to be sent periodically"),
+    active: bool = Query(description="Status to determine if periodic message sending is active")
+):
+    jsonTree = ["periodic_message"]
+    value = {
+        "period": period,
+        "topic": topic,
+        "message": message,
+        "active": active
+    }
+    return manager.update_instance_configuration(instance_name, jsonTree, value=value)
